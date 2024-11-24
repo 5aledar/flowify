@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(req: Request, context: { params: { googleId: string } }) {
     try {
-        const { googleId } = await context.params;
+        const { googleId } =  await context.params;
 
         if (!googleId) {
             return NextResponse.json(
@@ -22,6 +22,7 @@ export async function GET(req: Request, context: { params: { googleId: string } 
                 tasks: true,
             },
         });
+        
 
         return NextResponse.json(projects, { status: 200 });
     } catch (error) {

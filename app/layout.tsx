@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import  { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from '@clerk/themes'
+import QueryProvider from "@/components/QueryProvider";
+
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -18,7 +21,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title:{
+  title: {
     template: '%s | Flowify',
     default: 'Flowify'
   },
@@ -36,23 +39,25 @@ export default function RootLayout({
         baseTheme: dark,
       }}
     >
+      <QueryProvider >
 
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+        <html lang="en" suppressHydrationWarning>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            <Navbar />
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </body>
-      </html>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Navbar />
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </body>
+        </html>
+      </QueryProvider>
     </ClerkProvider>
   );
 }
