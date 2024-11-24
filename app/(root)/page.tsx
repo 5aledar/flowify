@@ -1,5 +1,5 @@
 import React from 'react'
-import { saveUserToDatabase } from '@/lib/saveUser'
+import { saveUserToDatabase } from '@/lib/actions/userActions'
 import { redirect } from 'next/navigation'
 import { currentUser } from '@clerk/nextjs/server'
 const Home = async () => {

@@ -3,29 +3,30 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL") 
+  provider = "mysql" // Make sure you're using MySQL
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @db.VarChar(100)
-  email     String    @unique @db.VarChar(255)
-  projects  Project[]
+  id       Int       @id @default(autoincrement())
+  username String // Prisma will automatically map this to VARCHAR(255)
+  email    String    @unique
+  googleId String    @unique
+  projects Project[] // One-to-many relation to projects
 }
 
 model Project {
-  id      Int     @id @default(autoincrement())
-  name    String  @db.VarChar(255)
-  userId  Int
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tasks   Task[]
+  id       Int    @id @default(autoincrement())
+  name     String // Prisma will map this to VARCHAR(255)
+  googleId String
+  user     User   @relation(fields: [googleId], references: [googleId], onDelete: Cascade)
+  tasks    Task[] // One-to-many relation to tasks
 }
 
 model Task {
   id          Int     @id @default(autoincrement())
-  title       String  @db.VarChar(255)
-  description String  @db.Text
+  title       String // Prisma will map this to VARCHAR(255)
+  description String // Prisma will map this to TEXT
   status      Status
   projectId   Int
   project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)

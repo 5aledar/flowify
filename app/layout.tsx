@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import  { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -48,6 +49,7 @@ export default function RootLayout({
           >
             <Navbar />
             {children}
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

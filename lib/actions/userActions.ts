@@ -1,8 +1,7 @@
 // lib/saveUser.ts
-import { prisma } from "./prisma";
-import { User } from "@clerk/nextjs/server";
+import { prisma } from "./../prisma";
 
-export const saveUserToDatabase = async (clerkUser: User) => {
+export const saveUserToDatabase = async (clerkUser: any) => {
   try {
     const email = clerkUser.emailAddresses[0]?.emailAddress;
 
@@ -20,7 +19,7 @@ export const saveUserToDatabase = async (clerkUser: User) => {
         data: {
           email,
           username: `${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim(),
-
+          googleId: clerkUser.id
         },
       });
       console.log(`User saved: ${email}`);
