@@ -1,6 +1,5 @@
-import React from 'react'
 import { signOut } from '@/auth'
-
+import { CiLogout } from "react-icons/ci";
 const LogOut = () => {
     return (
         <div>
@@ -10,7 +9,7 @@ const LogOut = () => {
                     await signOut()
                 }}
             >
-                <button type="submit" className='w-[100px] h-[33px] rounded-md flex bg-blue-600 hover:bg-blue-700 justify-center items-center cursor-pointer text-white'>Log out</button>
+                <button type="submit" className=' rounded-md flex justify-center items-center cursor-pointer '><CiLogout strokeWidth={2} size={16} /></button>
             </form>
         </div>
     )

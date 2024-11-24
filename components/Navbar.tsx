@@ -1,23 +1,26 @@
+'use server'
+
 import Image from 'next/image'
 import React from 'react'
 import { ModeToggle } from './ModeButton'
-import SignIn from './SignIn'
-import { auth } from '@/auth'
-import LogOut from './LogOut'
+import {  SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 const Navbar = async () => {
-  const session = await auth()
-
   return (
-    <div className='flex justify-between items-center h-[45px] px-5'>
+    <nav className='flex justify-between items-center h-[55px] px-16'>
       <div className='flex gap-2 items-center'>
         <Image src={'/logo.png'} alt='logo' width={32} height={32} />
         <p className='font-bold'>Flowify</p>
       </div>
       <div className='flex justify-between items-center gap-3'>
-        {!session ? (<SignIn />) : (<LogOut />)}
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
         <ModeToggle />
       </div>
-    </div>
+    </nav>
   )
 }
 
