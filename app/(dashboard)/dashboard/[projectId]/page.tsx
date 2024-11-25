@@ -7,11 +7,12 @@ const Project = () => {
   const id = parseInt(projectId)
   const {data , error , isLoading} = useFetchProject(id)
 
-
+  
   
   return (
     <div className='flex flex-col items-center'>
       <h1>{data?.name}</h1>
+      
     </div>
   )
 }
