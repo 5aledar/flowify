@@ -22,19 +22,13 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       );
     }
 
-    const deletedProject = await prisma.project.deleteMany({
+    const deletedProject = await prisma.project.delete({
       where: {
         id: projectId,
         googleId: googleId,
       },
     });
 
-    if (deletedProject.count === 0) {
-      return NextResponse.json(
-        { error: "No project found with the given id and googleId" },
-        { status: 404 }
-      );
-    }
 
     return NextResponse.json({ message: "Project deleted successfully" });
 
@@ -44,5 +38,25 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       { error: "Failed to delete project" },
       { status: 500 }
     );
+  }
+}
+
+
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const { id } = await params;
+
+  if (!id) {
+    return new NextResponse(JSON.stringify({ success: false, error: "Project name and user ID are required" }), { status: 400 });
+  }
+  try {
+    const project = await prisma.project.findUnique({
+      where: {
+        id: parseInt(id)
+      }
+    });
+    return new NextResponse(JSON.stringify(project));
+  } catch (error) {
+    console.error("Error fethcing project:", error);
+    return new NextResponse(JSON.stringify({ error: "Internal server error" }), { status: 500 });
   }
 }

@@ -10,12 +10,19 @@ const ProjectCard = ({ project, googleId }: any) => {
         deleteProjectMutation.mutate({ googleId, id });
     };
     return (
-            <div className='w-full cursor-pointer shadow-md bg-slate-100 dark:bg-slate-800  my-2 rounded-lg h-12 flex justify-between items-center px-3'>
-                <p>{project.name}</p>
-                <Button variant={'ghost'} onClick={() => handleDelete(project.id)}>
-                    <MdDelete color='red' />
+        <div className='w-full shadow-sm hover:bg-slate-100 bg-slate-50 dark:bg-[#222] dark:hover:bg-[#3f3f3f]  my-2 rounded-lg h-12 flex justify-between items-center px-3'>
+            <p>{project.name}</p>
+            <div>
+                <Link href={`/dashboard/${project.id}`}>
+                    <Button variant={'ghost'}>
+                        View
+                    </Button>
+                </Link>
+                <Button variant={'ghost'} className='text-red-500 hover:text-red-600' onClick={() => handleDelete(project.id)}>
+                    Delete
                 </Button>
             </div>
+        </div>
     )
 }
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 
-export async function POST(req: NextRequest  ) {
+export async function POST(req: NextRequest) {
     const { name, googleId } = await req.json();
 
     if (!name || !googleId) {
@@ -20,3 +20,5 @@ export async function POST(req: NextRequest  ) {
         return new NextResponse(JSON.stringify({ error: "Internal server error" }), { status: 500 });
     }
 }
+
+

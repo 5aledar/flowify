@@ -11,7 +11,7 @@ const Dashboard = async () => {
   }
 
   return (
-    <div className='px-16 pt-4'>
+    <div className='px-16 pt-4 h-[82vh]'>
       <div className='flex justify-between'>
         <h1 className='text-2xl font-bold'>Welcom {clerkUser.firstName}</h1>
         <CreateProject googleId={clerkUser.id} />
