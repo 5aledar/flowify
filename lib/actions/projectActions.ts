@@ -1,6 +1,7 @@
 // lib/projectActions.ts
 
 import axios from 'axios'
+import { revalidatePath } from 'next/cache';
 import toast from 'react-hot-toast';
 
 export async function fetchProjects(googleId: string) {
@@ -31,7 +32,8 @@ export async function deleteProject(googleId: string, id: number) {
             params: { googleId } // Pass googleId as query parameter
         });
         toast.success('PROJECT DELETED SUCCEFULLY')
-        return response.data; // Return the response data (success message or other)
+        // revalidatePath('/dashboard')
+        return response.data; 
     } catch (error: any) {
         throw new Error(error.response?.data?.error || "Failed to delete project.");
     }
