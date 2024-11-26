@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
+    const { params } = context;
     const { title, description, status } = await req.json();
-
-    const projectId = await parseInt(await params.id, 10);
-
+    const projectId = parseInt(await params.id, 10); 
     if (!title || !description || !status || isNaN(projectId)) {
       return NextResponse.json(
         { error: "Missing required fields or invalid project ID" },
@@ -35,6 +37,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 }
 
 
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -50,7 +53,7 @@ export async function GET(
     }
 
     const { searchParams } = new URL(req.url);
-    const page = Number(searchParams.get("page")) || 1;
+    const page = await Number(searchParams.get("page")) || 1;
     const pageSize = 7;
     const tasks = await prisma.task.findMany({
       where: {

@@ -6,6 +6,7 @@ import { useUpdateTaskStatus } from '@/hooks/useUpdateTaskStatus'
 import { useDeleteTask } from "@/hooks/useDeleteTask";
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
+import DeleteTask from './DeleteTask'
 enum TaskStatus {
     TO_DO = "TO_DO",
     IN_PROGRESS = "IN_PROGRESS",
@@ -45,9 +46,9 @@ const TaskItem = ({ task, projectId }: any) => {
                 </Select>
             </TableCell>
             <TableCell>{task.description}</TableCell>
-            <TableCell className="flex h-12 justify-end items-center"><Button variant={'ghost'} onClick={() => handleDelete(task.id)}><MdDelete color='red' /></Button></TableCell>
+            <TableCell className="flex h-12 justify-end items-center"><DeleteTask taskId={task.id} projectId={projectId}/></TableCell>
         </TableRow>
-
+        // <Button variant={'ghost'} onClick={() => handleDelete(task.id)}><MdDelete color='red' /></Button>
     )
 }
 

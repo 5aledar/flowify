@@ -4,7 +4,8 @@ import { prisma } from "@/lib/prisma";
 
 export async function PUT(req: NextRequest, { params }: { params: { projectId: string; taskId: string } }) {
   try {
-      const { projectId, taskId } = params;
+    const { projectId, taskId } = await params;
+
       const { status } = await req.json(); // Get the new status from the request body
 
       // Validate status

@@ -4,11 +4,9 @@ import { MdDelete } from "react-icons/md";
 import { Button } from './ui/button';
 import { useDeleteProject } from '@/hooks/useDeleteProject';
 import Link from 'next/link';
+import DeleteProject from './DeleteProject';
 const ProjectCard = ({ project, googleId }: any) => {
-    const deleteProjectMutation = useDeleteProject(googleId);
-    const handleDelete = (id: number) => {
-        deleteProjectMutation.mutate({ googleId, id });
-    };
+  
     return (
         <div className='w-full shadow-sm hover:bg-slate-100 bg-slate-50 dark:bg-[#222] dark:hover:bg-[#3f3f3f]  my-2 rounded-lg h-12 flex justify-between items-center px-3'>
             <p>{project.name}</p>
@@ -18,9 +16,8 @@ const ProjectCard = ({ project, googleId }: any) => {
                         View
                     </Button>
                 </Link>
-                <Button variant={'ghost'} className='text-red-500 hover:text-red-600' onClick={() => handleDelete(project.id)}>
-                    Delete
-                </Button>
+                <DeleteProject id={project.id} googleId={googleId} />
+                
             </div>
         </div>
     )
