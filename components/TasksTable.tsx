@@ -6,25 +6,15 @@ import TaskItem from './Task'
 const TasksTable = ({ tasks, id }: { tasks: Task[] | undefined, id: string }) => {
     console.log(tasks);
     return (
-        <Table>
-            <TableHeader className='shadow-md '>
-                <TableRow>
-                    <TableHead className="w-[100px]">Title</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead className='text-right'>actions</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {tasks?.map((task: any) => (
+        <>
 
-                    <TaskItem task={task} projectId={id} key={task.id}/>
-                ))
+            {tasks?.map((task: any) => (
 
-                }
-            </TableBody>
-        </Table>
+                <TaskItem task={task} projectId={id} key={task.id} />
+            ))
 
+            }
+        </>
     )
 }
 

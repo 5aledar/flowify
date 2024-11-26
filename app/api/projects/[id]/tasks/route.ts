@@ -58,6 +58,9 @@ export async function GET(
       },
       skip: (page - 1) * pageSize,
       take: pageSize,
+      orderBy: {
+        createdAt: 'asc', 
+      },
     });
 
     const totalTasks = await prisma.task.count({
