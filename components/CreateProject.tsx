@@ -9,8 +9,9 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import { Button } from "./ui/button";
+
 export default function CreateProjectButton({ googleId }: { googleId: string }) {
   const [projectName, setProjectName] = useState("");
   const createProjectMutation = useCreateProject(googleId);

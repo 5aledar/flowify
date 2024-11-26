@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from './ui/button'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
+import toast from 'react-hot-toast'
 import {
     Dialog,
     DialogContent,
@@ -21,6 +22,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useCreateTask } from '@/hooks/useCreateTask'
 
 enum TaskStatus {
     TO_DO = "TO_DO",
@@ -28,14 +30,42 @@ enum TaskStatus {
     COMPLETED = "COMPLETED",
 }
 
-const CreateTask = () => {
+const CreateTask = ({ projectId }: { projectId: string }) => {
     const [title, setTitle] = useState('')
-    const [descreption, setDescreption] = useState('')
+    const [description, setDescription] = useState('')
     const [status, setStatus] = useState<TaskStatus>(TaskStatus.TO_DO)
+    const { mutate } = useCreateTask(projectId);
+
+    const handleStatusChange = (value: string) => {
+        // Ensure the value matches the TaskStatus enum
+        const newStatus = value as TaskStatus;
+        setStatus(newStatus);
+    };
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!title || !description || !status) {
+            return toast.error("All fields are required");
+        }
+
+        mutate(
+            {
+                projectId,
+                taskData: { title, description, status },
+            },
+            {
+                onSuccess: () => {
+                    setTitle("");
+                    setDescription("");
+                    setStatus(TaskStatus.TO_DO);
+                },
+            }
+        );
+    };
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className='text-lg'>Add</Button>
+                <Button variant="outline" className='text-md'>+</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -55,21 +85,25 @@ const CreateTask = () => {
                         <Label htmlFor="desc" className="text-right">
                             Description
                         </Label>
-                        <Input id="desc" value={descreption} onChange={(e) => setDescreption(e.target.value)} className="col-span-3" />
+                        <Input id="desc" value={description} onChange={(e) => setDescription(e.target.value)} className="col-span-3" />
                     </div>
-                    <Select>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value={TaskStatus.TO_DO}>to do</SelectItem>
-                            <SelectItem value={TaskStatus.IN_PROGRESS}>in progress</SelectItem>
-                            <SelectItem value={TaskStatus.COMPLETED}>comleted</SelectItem>
-                        </SelectContent>
-                    </Select>
+                    <div className="grid grid-cols-4 items-center gap-4">
+
+                        <Label className='text-right'>Status</Label>
+                        <Select onValueChange={handleStatusChange}>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value={TaskStatus.TO_DO}>To Do</SelectItem>
+                                <SelectItem value={TaskStatus.IN_PROGRESS}>In Progress</SelectItem>
+                                <SelectItem value={TaskStatus.COMPLETED}>Completed</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit">Add</Button>
+                    <Button type="submit" onClick={handleSubmit}>Add</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
