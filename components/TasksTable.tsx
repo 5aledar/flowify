@@ -3,11 +3,11 @@ import { Task } from '@prisma/client'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import React from 'react'
 import TaskItem from './Task'
-const ToDoTasks = ({ tasks, id }: { tasks: Task[] | undefined, id: string }) => {
+const TasksTable = ({ tasks, id }: { tasks: Task[] | undefined, id: string }) => {
     console.log(tasks);
     return (
         <Table>
-            <TableHeader>
+            <TableHeader className='shadow-md '>
                 <TableRow>
                     <TableHead className="w-[100px]">Title</TableHead>
                     <TableHead>Status</TableHead>
@@ -28,4 +28,4 @@ const ToDoTasks = ({ tasks, id }: { tasks: Task[] | undefined, id: string }) => 
     )
 }
 
-export default ToDoTasks
+export default TasksTable

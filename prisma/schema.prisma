@@ -3,33 +3,35 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql" 
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
   id       Int       @id @default(autoincrement())
-  username String 
+  username String
   email    String    @unique
   googleId String    @unique
-  projects Project[] 
+  projects Project[]
 }
 
 model Project {
   id       Int    @id @default(autoincrement())
-  name     String 
+  name     String
   googleId String
   user     User   @relation(fields: [googleId], references: [googleId], onDelete: Cascade)
-  tasks    Task[] 
+  tasks    Task[]
 }
 
 model Task {
-  id          Int     @id @default(autoincrement())
-  title       String 
-  description String 
+  id          Int      @id @default(autoincrement())
+  title       String   
+  description String   
   status      Status
   projectId   Int
-  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) // Automatically set when the record is created
+  updatedAt   DateTime @default(now()) @updatedAt // Initially set to now and auto-updated on changes
 }
 
 enum Status {

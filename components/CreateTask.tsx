@@ -90,7 +90,7 @@ const CreateTask = ({ projectId }: { projectId: string }) => {
                     <div className="grid grid-cols-4 items-center gap-4">
 
                         <Label className='text-right'>Status</Label>
-                        <Select onValueChange={handleStatusChange}>
+                        <Select onValueChange={handleStatusChange} defaultValue={TaskStatus.TO_DO}>
                             <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="Status" />
                             </SelectTrigger>
