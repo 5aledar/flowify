@@ -46,11 +46,12 @@ export async function DELETE(
     );
   }
 }
+
 export async function GET(
   req: Request,
-  context: { params: { id: string } } // Corrected typing
+  { params }: { params: any} // Updated typing
 ) {
-  const { id } = context.params;
+  const { id } = params;
 
   if (!id) {
     return NextResponse.json(
@@ -90,7 +91,6 @@ export async function GET(
     );
   }
 }
-
 
 // PUT handler
 export async function PUT(
