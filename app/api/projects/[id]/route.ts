@@ -46,11 +46,9 @@ export async function DELETE(
     );
   }
 }
-
-// GET handler
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Record<string, string> } // Updated typing
 ) {
   const { id } = params;
 

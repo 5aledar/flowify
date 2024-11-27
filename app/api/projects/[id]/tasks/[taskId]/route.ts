@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function PUT(req: NextRequest, { params }: { params: { projectId: string; taskId: string } }) {
   try {
-    const { projectId, taskId } = await params;
+    const { taskId } = await params;
 
       const { status } = await req.json();
 
