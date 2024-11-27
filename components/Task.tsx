@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { MdDelete } from 'react-icons/md'
 import { useUpdateTaskStatus } from '@/hooks/useUpdateTaskStatus'
-import { useDeleteTask } from '@/hooks/useDeleteTask'
-import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import DeleteTask from './DeleteTask'
 enum TaskStatus {
@@ -22,13 +19,6 @@ const TaskItem = ({ task, projectId }: any) => {
         updateStatus({ taskId: task.id, status: newStatus, projectId, });
     };
 
-    const { mutate: deleteTask } = useDeleteTask();
-
-    const handleDelete = (taskId: number) => {
-        if (confirm("Are you sure you want to delete this task?")) {
-            deleteTask({ projectId, taskId });
-        }
-    };
     return (
 
         <TableRow key={task.id}>
@@ -48,8 +38,7 @@ const TaskItem = ({ task, projectId }: any) => {
             <TableCell>{task.description}</TableCell>
             <TableCell className="flex h-12 justify-end items-center"><DeleteTask taskId={task.id} projectId={projectId}/></TableCell>
         </TableRow>
-        // <Button variant={'ghost'} onClick={() => handleDelete(task.id)}><MdDelete color='red' /></Button>
     )
 }
 
-export default TaskItem
+export default TaskItem 

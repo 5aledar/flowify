@@ -3,6 +3,7 @@ import { Task } from '@prisma/client'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import React from 'react'
 import TaskItem from './Task'
+
 const TasksTable = ({ tasks, id }: { tasks: Task[] | undefined, id: string }) => {
     return (
         <>

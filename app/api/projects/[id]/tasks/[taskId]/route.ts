@@ -1,4 +1,3 @@
-// API Endpoint (route.ts)
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
@@ -6,14 +5,12 @@ export async function PUT(req: NextRequest, { params }: { params: { projectId: s
   try {
     const { projectId, taskId } = await params;
 
-      const { status } = await req.json(); // Get the new status from the request body
+      const { status } = await req.json();
 
-      // Validate status
       if (!["TO_DO", "IN_PROGRESS", "COMPLETED"].includes(status)) {
           return NextResponse.json({ error: "Invalid status" }, { status: 400 });
       }
 
-      // Update task in the database
       const task = await prisma.task.update({
           where: { id: Number(taskId) },
           data: { status },

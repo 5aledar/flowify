@@ -12,9 +12,6 @@ const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }
     const [editing, setEditing] = useState(false)
     const [loading, setLoading] = useState(false)
     const [documentTitle, setDocumentTitle] = useState(title)
-
-    console.log('hello', title);
-
     useEffect(()=>{
         setDocumentTitle(title)
     },[title])
@@ -30,7 +27,6 @@ const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }
             setLoading(true)
             try {
                 if (documentTitle !== title ) {
-                   
                     const  data  = await axios.put(`/api/projects/${projectId}`, { name: documentTitle })
                     if (data.status === 200) {
                         setDocumentTitle(data.data.name)

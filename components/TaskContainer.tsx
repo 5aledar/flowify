@@ -74,29 +74,37 @@ const TaskContainer = ({ id }: { id: string }) => {
                     }
                 </TableBody>
             </Table>
-            <div className="flex items-center justify-center gap-7 mt-6">
-                <Button
-                    disabled={currentPage === 1}
-                    onClick={prevPage}
-                    className="px-4 py-2  rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
-                >
-                    -
-                </Button>
+            <div className="flex items-center flex-row-reverse justify-between gap-7 mt-6">
+                <div className='flex gap-2'>
+                    <Button
+                        disabled={currentPage === 1}
+                        variant={'outline'}
+                        onClick={prevPage}
+                        className="h-[30px] text-[12px]  rounded-lg  disabled:cursor-not-allowed"
+                    >
+                        Previous
+                    </Button>
+                    <Button
+                        disabled={currentPage === meta?.totalPages}
+                        variant={'outline'}
+                        onClick={nextPage}
+                        className=" text-[12px] h-[30px] rounded-lg  disabled:cursor-not-allowed"
+                    >
+                        Next
+                    </Button>
+                </div>
 
-                <span className="text-sm font-semibold">
+                <span className="text-[12px] font-normal">
                     Page {meta?.currentPage} of {meta?.totalPages}
                 </span>
 
-                <Button
-                    disabled={currentPage === meta?.totalPages}
-                    onClick={nextPage}
-                    className="px-4 py-2 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
-                >
-                    +
-                </Button>
             </div>
         </div>
     )
 }
 
-export default TaskContainer
+export default TaskContainer   
+
+
+   // "react": "19.0.0-rc-66855b96-20241106",
+        // "react-dom": "19.0.0-rc-66855b96-20241106",
