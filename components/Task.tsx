@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { MdDelete } from 'react-icons/md'
 import { useUpdateTaskStatus } from '@/hooks/useUpdateTaskStatus'
-import { useDeleteTask } from "@/hooks/useDeleteTask";
+import { useDeleteTask } from '@/hooks/useDeleteTask'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import DeleteTask from './DeleteTask'

@@ -1,12 +1,36 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
-export default clerkMiddleware()
+const publicRoutes = createRouteMatcher([
+  '/sign-in',
+  '/sign-up',
+  '/'
+])
+
+export default clerkMiddleware(async (auth, req) => {
+  const { userId } = await auth()
+  const currentUrl = new URL(req.url)
+  const isLanding = currentUrl.pathname === '/'
+  const apiRequest = currentUrl.pathname.startsWith('/api')
+
+  if (userId && publicRoutes(req) && isLanding) {
+    return NextResponse.redirect(new URL('/dashboard', req.url))
+  }
+  if (!userId) {
+    if (!publicRoutes(req)) {
+      return NextResponse.redirect(new URL('/sign-in', req.url))
+    }
+    if (apiRequest && !publicRoutes(req)) {
+      return NextResponse.redirect(new URL('/sign-in', req.url))
+    }
+  }
+  return NextResponse.next()
+})
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
+    '/((?!.*\\..*|_next).*)',
+    '/',
     '/(api|trpc)(.*)',
   ],
 }

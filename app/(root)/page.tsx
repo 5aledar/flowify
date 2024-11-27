@@ -6,12 +6,6 @@ import { url } from 'inspector'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 const Home = async () => {
-  const clerkUser = await currentUser()
-  if (clerkUser) {
-    await saveUserToDatabase(clerkUser);
-
-    redirect('/dashboard')
-  }
   return (
     <div className='p-16 h-[100vh] ' >
       <div className="h-[400px] flex m-auto flex-col max-w-[900px] gap-5 justify-center p-16 items-start opacity-90 rounded-2xl bg-gradient-to-t  from-pink-500 to-purple-600">

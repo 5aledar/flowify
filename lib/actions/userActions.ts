@@ -1,6 +1,5 @@
 // lib/saveUser.ts
 import { prisma } from "./../prisma";
-
 export const saveUserToDatabase = async (clerkUser: any) => {
   try {
     const email = clerkUser.emailAddresses[0]?.emailAddress;
@@ -14,7 +13,6 @@ export const saveUserToDatabase = async (clerkUser: any) => {
     });
 
     if (!existingUser) {
-
       await prisma.user.create({
         data: {
           email,
