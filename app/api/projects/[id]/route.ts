@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 // DELETE handler
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params:any }
 ) {
   const { id } = params;
 

@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 
-export async function GET(req: Request, context: { params: { googleId: string } }) {
+export async function GET(req: Request, context: { params: any }) {
     try {
-        const { googleId } =await context.params;
+        const { googleId } = await context.params;
 
         if (!googleId) {
             return NextResponse.json(
