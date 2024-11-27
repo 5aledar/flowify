@@ -48,9 +48,9 @@ export async function DELETE(
 }
 export async function GET(
   req: Request,
-  { params }: { params: Record<string, string> } // Updated typing
+  context: { params: { id: string } } // Corrected typing
 ) {
-  const { id } = params;
+  const { id } = context.params;
 
   if (!id) {
     return NextResponse.json(
@@ -90,6 +90,7 @@ export async function GET(
     );
   }
 }
+
 
 // PUT handler
 export async function PUT(
