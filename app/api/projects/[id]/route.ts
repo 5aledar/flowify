@@ -95,7 +95,7 @@ export async function GET(
 // PUT handler
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: any }
 ) {
   const { id } = params;
 
