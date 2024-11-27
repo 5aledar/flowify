@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest, { params }: { params: any}) {
 
 export async function DELETE(
     req: NextRequest,
-    { params }: { params: { projectId: string; taskId: string } }
+    { params }: { params: any }
   ) {
     try {
       const { taskId } =await params;
