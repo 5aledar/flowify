@@ -14,7 +14,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       );
     }
 
-    const projectId = parseInt(id, 10);
+    const projectId = parseInt(await id);
     if (isNaN(projectId)) {
       return NextResponse.json(
         { error: "Invalid project ID format" },
@@ -60,3 +60,27 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     return new NextResponse(JSON.stringify({ error: "Internal server error" }), { status: 500 });
   }
 }
+
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+  const { id } = await params
+  const { name } = await req.json()
+  if (!id || !name) {
+    return new NextResponse(JSON.stringify({ success: false, error: "Project title and id are required" }), { status: 400 });
+  }
+  try {
+    const project = await prisma.project.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        name
+      }
+    })
+    return NextResponse.json(project, { status: 200 })
+  } catch (error) {
+    console.error("Error updating task:", error);
+    return NextResponse.json({ error: "Failed to update title" }, { status: 500 });
+  }
+}
+
+

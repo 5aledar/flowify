@@ -1,29 +1,57 @@
-import { useFetchTasks } from '@/hooks/useFetchTasks'
-import { useState } from 'react'
+import { useFetchTasks } from '@/hooks/useFetchTasks';
 import { useUpdateTaskStatus } from "@/hooks/useUpdateTaskStatus";
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-
+import { Badge } from "@/components/ui/badge";
 import TasksTable from './TasksTable';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Button } from './ui/button';
+import CreateTask from './CreateTask';
 
 const TaskContainer = ({ id }: { id: string }) => {
-    const [page, setPage] = useState(1);
-    const { mutate: updateStatus } = useUpdateTaskStatus();
     const {
         tasks,
         meta,
         nextPage,
         prevPage,
         currentPage,
-    } = useFetchTasks(id); const handleStatusChange = (newStatus: string, task: any) => {
-        updateStatus({ taskId: task.id, status: newStatus, projectId: id });
+        sortOption,
+        changeSortOption
+    } = useFetchTasks(id);
+
+
+
+    const handleSortChange = (sortValue: string) => {
+        changeSortOption(sortValue === "Oldest" ? "older" : "newer");
     };
 
-
     return (
+        <div className="w-full h-[90vh] py-10">
+            <div className="mb-4 flex justify-between items-center">
+                <div className='flex items-center'>
 
-        <div className='w-full h-[90vh] py-10'>
+                    <p className="mr-2">Sort by:</p>
+                    <Select
+                        onValueChange={handleSortChange}
+                        defaultValue={sortOption === "older" ? "Oldest" : "Newest"}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder={sortOption === "older" ? "Oldest" : "Newest"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="Oldest">Oldest</SelectItem>
+                            <SelectItem value="Newest">Newest</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <CreateTask projectId={id} />
+
+            </div>
             <Table className='  w-full'>
                 <TableHeader className='shadow-md '>
                     <TableRow>

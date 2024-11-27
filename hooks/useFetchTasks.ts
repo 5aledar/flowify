@@ -21,21 +21,28 @@ interface FetchTasksResponse {
 }
 
 // Fetch Tasks API Function
-const fetchTasks = async (projectId: string, page: number): Promise<FetchTasksResponse> => {
-  const { data } = await axios.get(`/api/projects/${projectId}/tasks?page=${page}`);
-    
+const fetchTasks = async (
+  projectId: string,
+  page: number,
+  sort: string
+): Promise<FetchTasksResponse> => {
+  const { data } = await axios.get(
+    `/api/projects/${projectId}/tasks?page=${page}&sort=${sort}`
+  );
+
   return data;
 };
 
 // Custom Hook
 export const useFetchTasks = (projectId: string) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortOption, setSortOption] = useState<"older" | "newer">("older"); // Default sort
 
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["tasks", projectId, currentPage],
-    queryFn: () => fetchTasks(projectId, currentPage),
+    queryKey: ["tasks", projectId, currentPage, sortOption],
+    queryFn: () => fetchTasks(projectId, currentPage, sortOption),
   });
- 
+
   const nextPage = () => {
     if (data?.pagination && currentPage < data.pagination.totalPages) {
       setCurrentPage((prev) => prev + 1);
@@ -47,8 +54,12 @@ export const useFetchTasks = (projectId: string) => {
       setCurrentPage((prev) => prev - 1);
     }
   };
-  
-  
+
+  const changeSortOption = (newSort: "older" | "newer") => {
+    setSortOption(newSort);
+    setCurrentPage(1); // Reset to the first page when sorting changes
+  };
+
   return {
     tasks: data?.tasks,
     meta: data?.pagination,
@@ -58,5 +69,7 @@ export const useFetchTasks = (projectId: string) => {
     currentPage,
     nextPage,
     prevPage,
+    sortOption,
+    changeSortOption,
   };
 };

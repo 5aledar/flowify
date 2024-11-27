@@ -4,7 +4,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import React from 'react'
 import TaskItem from './Task'
 const TasksTable = ({ tasks, id }: { tasks: Task[] | undefined, id: string }) => {
-    console.log(tasks);
     return (
         <>
 

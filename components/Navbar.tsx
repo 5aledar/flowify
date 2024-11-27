@@ -7,7 +7,7 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 const Navbar = async () => {
   return (
-    <nav className='flex justify-between items-center h-[55px] px-12'>
+    <nav className='flex justify-between fixed w-full backdrop-blur-lg items-center h-[55px] px-12'>
       <Link href={'/dashboard'}>
         <div className='flex gap-2 items-center'>
           <Image src={'/logo.png'} alt='logo' width={32} height={32} />

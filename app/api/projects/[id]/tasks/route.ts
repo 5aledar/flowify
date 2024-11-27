@@ -37,13 +37,12 @@ export async function POST(
 }
 
 
-
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
 
     if (isNaN(Number(id))) {
       return NextResponse.json(
@@ -53,16 +52,21 @@ export async function GET(
     }
 
     const { searchParams } = new URL(req.url);
-    const page = await Number(searchParams.get("page")) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     const pageSize = 7;
+    const sort = searchParams.get("sort") || "older"; 
+
+    const orderBy = sort === "newer" ? "desc" : "asc";
+
     const tasks = await prisma.task.findMany({
       where: {
         projectId: Number(id),
       },
       skip: (page - 1) * pageSize,
       take: pageSize,
+      
       orderBy: {
-        createdAt: 'asc', 
+        createdAt: orderBy, 
       },
     });
 
@@ -100,7 +104,6 @@ export async function GET(
     );
   }
 }
-
 
 
 
