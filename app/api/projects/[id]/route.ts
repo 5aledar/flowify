@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+// DELETE handler
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+
   try {
-    const { id } = await params;
     const url = new URL(req.url);
-    const googleId = url.searchParams.get('googleId');
+    const googleId = url.searchParams.get("googleId");
 
     if (!id || !googleId) {
       return NextResponse.json(
@@ -14,7 +19,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       );
     }
 
-    const projectId = parseInt(await id);
+    const projectId = parseInt(id, 10);
     if (isNaN(projectId)) {
       return NextResponse.json(
         { error: "Invalid project ID format" },
@@ -29,9 +34,10 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       },
     });
 
-
-    return NextResponse.json({ message: "Project deleted successfully" });
-
+    return NextResponse.json(
+      { message: "Project deleted successfully", deletedProject },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error deleting project:", error);
     return NextResponse.json(
@@ -41,46 +47,92 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   }
 }
 
-
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = await params;
+// GET handler
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
 
   if (!id) {
-    return new NextResponse(JSON.stringify({ success: false, error: "Project name and user ID are required" }), { status: 400 });
+    return NextResponse.json(
+      { success: false, error: "Project ID is required" },
+      { status: 400 }
+    );
   }
+
+  const projectId = parseInt(id, 10);
+  if (isNaN(projectId)) {
+    return NextResponse.json(
+      { error: "Invalid project ID format" },
+      { status: 400 }
+    );
+  }
+
   try {
     const project = await prisma.project.findUnique({
       where: {
-        id: parseInt(id)
-      }
+        id: projectId,
+      },
     });
-    return new NextResponse(JSON.stringify(project));
+
+    if (!project) {
+      return NextResponse.json(
+        { error: "Project not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(project, { status: 200 });
   } catch (error) {
-    console.error("Error fethcing project:", error);
-    return new NextResponse(JSON.stringify({ error: "Internal server error" }), { status: 500 });
+    console.error("Error fetching project:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-  const { id } = await params
-  const { name } = await req.json()
-  if (!id || !name) {
-    return new NextResponse(JSON.stringify({ success: false, error: "Project title and id are required" }), { status: 400 });
-  }
+// PUT handler
+export async function PUT(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+
   try {
-    const project = await prisma.project.update({
+    const { name } = await req.json();
+
+    if (!id || !name) {
+      return NextResponse.json(
+        { success: false, error: "Project title and ID are required" },
+        { status: 400 }
+      );
+    }
+
+    const projectId = parseInt(id, 10);
+    if (isNaN(projectId)) {
+      return NextResponse.json(
+        { error: "Invalid project ID format" },
+        { status: 400 }
+      );
+    }
+
+    const updatedProject = await prisma.project.update({
       where: {
-        id: Number(id),
+        id: projectId,
       },
       data: {
-        name
-      }
-    })
-    return NextResponse.json(project, { status: 200 })
+        name,
+      },
+    });
+
+    return NextResponse.json(updatedProject, { status: 200 });
   } catch (error) {
-    console.error("Error updating task:", error);
-    return NextResponse.json({ error: "Failed to update title" }, { status: 500 });
+    console.error("Error updating project:", error);
+    return NextResponse.json(
+      { error: "Failed to update project title" },
+      { status: 500 }
+    );
   }
 }
-
-
