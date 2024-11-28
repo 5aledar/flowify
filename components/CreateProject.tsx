@@ -14,7 +14,7 @@ import { Button } from "./ui/button";
 
 export default function CreateProjectButton({ googleId }: { googleId: string }) {
   const [projectName, setProjectName] = useState("");
-  const [popoverOpen, setPopoverOpen] = useState(false); // Manage popover state
+  const [popoverOpen, setPopoverOpen] = useState(false); 
   const createProjectMutation = useCreateProject(googleId);
 
   const handleCreateProject = () => {
@@ -25,7 +25,7 @@ export default function CreateProjectButton({ googleId }: { googleId: string }) 
     createProjectMutation.mutate({ name: projectName, googleId }, {
       onSuccess: () => {
         setProjectName('');
-        setPopoverOpen(false); // Close the popover on success
+        setPopoverOpen(false); 
       },
     });
   };

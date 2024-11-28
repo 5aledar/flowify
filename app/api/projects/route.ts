@@ -3,6 +3,7 @@ import { prisma } from "../../../lib/prisma";
 
 export async function POST(req: NextRequest) {
     const { name, googleId } = await req.json();
+    console.log({ name, googleId });
 
     if (!name || !googleId) {
         return new NextResponse(JSON.stringify({ success: false, error: "Project name and user ID are required" }), { status: 400 });

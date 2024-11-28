@@ -3,7 +3,8 @@ import { prisma } from "./../prisma";
 export const saveUserToDatabase = async (clerkUser: any) => {
   try {
     const email = clerkUser.emailAddresses[0]?.emailAddress;
-
+    console.log(email);
+    
     if (!email) {
       throw new Error("User email not found.");
     }
@@ -20,9 +21,10 @@ export const saveUserToDatabase = async (clerkUser: any) => {
           googleId: clerkUser.id
         },
       });
+      
       console.log(`User saved: ${email}`);
     }
   } catch (error) {
-    console.error("Error saving user:", error);
+    console.log("Error saving user:", error);
   }
 };
