@@ -18,6 +18,7 @@ const DeleteProject = ({ googleId, id }: any) => {
     const handleDelete = (id: number) => {
         deleteProjectMutation.mutate({ googleId, id });
     };
+
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>

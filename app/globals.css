@@ -34,6 +34,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -66,13 +67,24 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-
 @layer utilities {
-  .document-title-input {
+  .project-title-input {
     @apply min-w-[78px] border-none bg-transparent px-0 text-left text-base font-semibold leading-[24px] focus-visible:ring-0 focus-visible:ring-offset-0 disabled:text-black sm:text-xl md:text-center !important;
+  }
+
+  .project-title {
+    @apply line-clamp-1 text-base font-semibold leading-[24px] sm:pl-0 sm:text-xl
+  }
+
+  .porject-card {
+    @apply w-full shadow-sm hover:bg-slate-100 bg-slate-50 dark:bg-[#222] duration-300 dark:hover:bg-[#3f3f3f] my-2 rounded-lg h-12 flex justify-between items-center px-3
+  }
+  .loading-spinner {
+    @apply w-10 h-10  border-solid rounded-full animate-spin bg-gradient-to-r from-pink-500 to-purple-600
   }
 }

@@ -61,10 +61,10 @@ const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }
                         onChange={(e) => setDocumentTitle(e.target.value)}
                         onKeyDown={updateTitleHandler}
                         disabled={!editing}
-                        className='min-w-[78px] border-none bg-transparent px-0 text-left text-base font-semibold leading-[24px] focus-visible:ring-0 focus-visible:ring-offset-0 disabled:text-black sm:text-xl md:text-center !important'
+                        className='project-title-input'
                     />
                 ) : (
-                    <p className='line-clamp-1 border-dark-400 text-base font-semibold leading-[24px] sm:pl-0 sm:text-xl'>{documentTitle}</p>
+                    <p className='project-title'>{documentTitle}</p>
                 )}
                 {!editing && (
                     <Image

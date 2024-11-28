@@ -1,28 +1,12 @@
 import { useFetchTasks } from '@/hooks/useFetchTasks';
-import { useUpdateTaskStatus } from "@/hooks/useUpdateTaskStatus";
-import { Badge } from "@/components/ui/badge";
 import TasksTable from './TasksTable';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Button } from './ui/button';
 import CreateTask from './CreateTask';
 
 const TaskContainer = ({ id }: { id: string }) => {
-    const {
-        tasks,
-        meta,
-        nextPage,
-        prevPage,
-        currentPage,
-        sortOption,
-        changeSortOption
-    } = useFetchTasks(id);
+    const { tasks, meta, nextPage, prevPage, currentPage, sortOption, changeSortOption } = useFetchTasks(id);
 
 
 
@@ -103,8 +87,5 @@ const TaskContainer = ({ id }: { id: string }) => {
     )
 }
 
-export default TaskContainer   
+export default TaskContainer
 
-
-   // "react": "19.0.0-rc-66855b96-20241106",
-        // "react-dom": "19.0.0-rc-66855b96-20241106",

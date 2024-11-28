@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: {
-        template: '%s | Flowify',
-        default: 'Dashboard'
-      },
+    title: "Project",
     description: "description",
 };
 export default function IndexLayout({

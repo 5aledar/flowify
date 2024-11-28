@@ -22,7 +22,7 @@ export default function UserProjects({ googleId }: { googleId: string }) {
     }
     return (
         <Suspense fallback={<LoadingSpinner />}>
-            <div className="flex flex-col justify-between h-[100%]">
+            <section className="flex flex-col justify-between h-[100%]">
                 <div className="h-[50vh]">
                     <h1>Your Projects</h1>
                     {isLoading ? (<ProjectSceleteon />) :
@@ -58,7 +58,7 @@ export default function UserProjects({ googleId }: { googleId: string }) {
                         </button>
                     </div>
                 )}
-            </div>
+            </section>
         </Suspense>
     );
 }

@@ -8,16 +8,15 @@ import DeleteProject from './DeleteProject';
 const ProjectCard = ({ project, googleId }: any) => {
   
     return (
-        <div className='w-full shadow-sm hover:bg-slate-100 bg-slate-50 dark:bg-[#222] dark:hover:bg-[#3f3f3f]  my-2 rounded-lg h-12 flex justify-between items-center px-3'>
+        <div className='porject-card'>
             <p>{project.name}</p>
-            <div>
+            <div className='flex gap-2'>
                 <Link href={`/dashboard/${project.id}`}>
                     <Button variant={'ghost'}>
                         View
                     </Button>
                 </Link>
                 <DeleteProject id={project.id} googleId={googleId} />
-                
             </div>
         </div>
     )
