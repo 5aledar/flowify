@@ -1,8 +1,6 @@
 import React from 'react'
-
 import CreateProject from '@/components/CreateProject'
 import { currentUser } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
 import UserProjects from '@/components/UserProjects'
 import { saveUserToDatabase } from '@/lib/actions/userActions'
 const Dashboard = async () => {

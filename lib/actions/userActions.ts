@@ -1,4 +1,3 @@
-// lib/saveUser.ts
 import { prisma } from "./../prisma";
 export const saveUserToDatabase = async (clerkUser: any) => {
   try {
@@ -21,7 +20,6 @@ export const saveUserToDatabase = async (clerkUser: any) => {
           googleId: clerkUser.id
         },
       });
-      
       console.log(`User saved: ${email}`);
     }
   } catch (error) {

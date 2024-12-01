@@ -28,7 +28,6 @@ const fetchProjects = async (googleId: string, page: number) => {
   return data;
 };
 
-// Custom Hook
 export const useFetchProjects = (googleId: string) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -39,7 +38,6 @@ export const useFetchProjects = (googleId: string) => {
 
   );
 
-  // Pagination controls
   const nextPage = () => {
     if (data?.meta && currentPage < data.meta.totalPages) {
       setCurrentPage((prev) => prev + 1);

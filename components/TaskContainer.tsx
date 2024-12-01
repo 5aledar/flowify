@@ -5,21 +5,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "
 import { Button } from './ui/button';
 import CreateTask from './CreateTask';
 import TableSkeleton from './TableSkeleton';
+import Pagenation from './Pagenation';
 
 const TaskContainer = ({ id }: { id: string }) => {
     const { tasks, meta, nextPage, prevPage, currentPage, sortOption, changeSortOption, isLoading } = useFetchTasks(id);
 
-
-
     const handleSortChange = (sortValue: string) => {
         changeSortOption(sortValue === "Oldest" ? "older" : "newer");
     };
-
     return (
-        <div className="w-full h-[90vh] py-10">
+        <div className="w-full h-[80vh] py-10">
             <header className='mb-4 flex justify-between items-center'>
                 <div className='flex items-center'>
-
                     <p className="mr-2">Sort by:</p>
                     <Select
                         onValueChange={handleSortChange}
@@ -35,9 +32,8 @@ const TaskContainer = ({ id }: { id: string }) => {
                     </Select>
                 </div>
                 <CreateTask projectId={id} />
-
             </header>
-            <section className=' h-[50vh]'>
+            <section className='h-[50vh] mb-[60px]'>
                 <Table className='w-full'>
                     <TableHeader className='shadow-md '>
                         <TableRow>
@@ -51,7 +47,6 @@ const TaskContainer = ({ id }: { id: string }) => {
                         (
                             <TableSkeleton />
                         ) : (
-
                             <TableBody >
                                 {tasks?.ToDo.length! > 0 &&
                                     <TasksTable tasks={tasks?.ToDo} id={id} />
@@ -62,34 +57,10 @@ const TaskContainer = ({ id }: { id: string }) => {
                                 {tasks?.Completed.length! > 0 &&
                                     <TasksTable tasks={tasks?.Completed} id={id} />
                                 }
-
                             </TableBody>)}
                 </Table>
             </section>
-            <div className="flex items-center flex-row-reverse justify-between gap-7 mt-6">
-                <div className='flex gap-2'>
-                    <Button
-                        disabled={currentPage === 1}
-                        variant={'outline'}
-                        onClick={prevPage}
-                        className="h-[30px] text-[12px]  rounded-lg  disabled:cursor-not-allowed"
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        disabled={currentPage === meta?.totalPages || isLoading}
-                        variant={'outline'}
-                        onClick={nextPage}
-
-                        className=" text-[12px] h-[30px] rounded-lg  disabled:cursor-not-allowed"
-                    >
-                        Next
-                    </Button>
-                </div>
-                <span className="text-[12px] font-normal">
-                    Page {meta?.currentPage} of {meta?.totalPages}
-                </span>
-            </div>
+            <Pagenation currentPage={currentPage} meta={meta} isLoading={isLoading} prevPage={prevPage} nextPage={nextPage} />
         </div>
     )
 }
