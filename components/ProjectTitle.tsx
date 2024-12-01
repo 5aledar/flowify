@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 import axios from 'axios'
-import { revalidatePath } from 'next/cache'
 
 const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }) => {
     const id = parseInt(projectId)

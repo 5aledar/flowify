@@ -20,7 +20,6 @@ interface FetchProjectsResponse {
   meta: PaginationMeta;
 }
 
-// Fetch Projects API Function
 const fetchProjects = async (googleId: string, page: number) => {
   const { data } = await axios.get<FetchProjectsResponse>(
     `/api/projects/create/${googleId}?page=${page}`
