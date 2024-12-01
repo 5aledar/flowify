@@ -21,10 +21,7 @@ export const useUpdateTaskStatus = () => {
     return useMutation({
         mutationFn: updateTaskStatus,
         onSuccess: (_, { projectId }) => {
-            // Show success toast
             toast.success("Task status updated!");
-
-            // Refetch tasks for the project
             queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
         },
         onError: (error: any) => {

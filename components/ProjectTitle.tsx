@@ -64,7 +64,7 @@ const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }
                         className='project-title-input'
                     />
                 ) : (
-                    <p className='project-title'>{documentTitle}</p>
+                    <p className='project-title w-[200px]'>{documentTitle}</p>
                 )}
                 {!editing && (
                     <Image

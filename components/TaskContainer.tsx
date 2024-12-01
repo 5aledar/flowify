@@ -4,9 +4,10 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Button } from './ui/button';
 import CreateTask from './CreateTask';
+import TableSkeleton from './TableSkeleton';
 
 const TaskContainer = ({ id }: { id: string }) => {
-    const { tasks, meta, nextPage, prevPage, currentPage, sortOption, changeSortOption } = useFetchTasks(id);
+    const { tasks, meta, nextPage, prevPage, currentPage, sortOption, changeSortOption, isLoading } = useFetchTasks(id);
 
 
 
@@ -16,7 +17,7 @@ const TaskContainer = ({ id }: { id: string }) => {
 
     return (
         <div className="w-full h-[90vh] py-10">
-            <div className="mb-4 flex justify-between items-center">
+            <header className='mb-4 flex justify-between items-center'>
                 <div className='flex items-center'>
 
                     <p className="mr-2">Sort by:</p>
@@ -35,29 +36,36 @@ const TaskContainer = ({ id }: { id: string }) => {
                 </div>
                 <CreateTask projectId={id} />
 
-            </div>
-            <Table className='  w-full'>
-                <TableHeader className='shadow-md '>
-                    <TableRow>
-                        <TableHead className="w-[100px]">Title</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead className='text-right'>actions</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody >
+            </header>
+            <section className=' h-[50vh]'>
+                <Table className='w-full'>
+                    <TableHeader className='shadow-md '>
+                        <TableRow>
+                            <TableHead className="w-[100px]">Title</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Description</TableHead>
+                            <TableHead className='text-right'>actions</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    {isLoading ?
+                        (
+                            <TableSkeleton />
+                        ) : (
 
-                    {tasks?.ToDo.length! > 0 &&
-                        <TasksTable tasks={tasks?.ToDo} id={id} />
-                    }
-                    {tasks?.InProgress.length! > 0 &&
-                        <TasksTable tasks={tasks?.InProgress} id={id} />
-                    }
-                    {tasks?.Completed.length! > 0 &&
-                        <TasksTable tasks={tasks?.Completed} id={id} />
-                    }
-                </TableBody>
-            </Table>
+                            <TableBody >
+                                {tasks?.ToDo.length! > 0 &&
+                                    <TasksTable tasks={tasks?.ToDo} id={id} />
+                                }
+                                {tasks?.InProgress.length! > 0 &&
+                                    <TasksTable tasks={tasks?.InProgress} id={id} />
+                                }
+                                {tasks?.Completed.length! > 0 &&
+                                    <TasksTable tasks={tasks?.Completed} id={id} />
+                                }
+
+                            </TableBody>)}
+                </Table>
+            </section>
             <div className="flex items-center flex-row-reverse justify-between gap-7 mt-6">
                 <div className='flex gap-2'>
                     <Button
@@ -69,19 +77,18 @@ const TaskContainer = ({ id }: { id: string }) => {
                         Previous
                     </Button>
                     <Button
-                        disabled={currentPage === meta?.totalPages}
+                        disabled={currentPage === meta?.totalPages || isLoading}
                         variant={'outline'}
                         onClick={nextPage}
+
                         className=" text-[12px] h-[30px] rounded-lg  disabled:cursor-not-allowed"
                     >
                         Next
                     </Button>
                 </div>
-
                 <span className="text-[12px] font-normal">
                     Page {meta?.currentPage} of {meta?.totalPages}
                 </span>
-
             </div>
         </div>
     )

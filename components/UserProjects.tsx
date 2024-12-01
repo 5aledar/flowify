@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import ProjectSceleteon from "./ProjectSceleteon";
 import { Suspense } from "react";
 import LoadingSpinner from "./LoadingSpinner";
+import { Button } from "./ui/button";
 
 export default function UserProjects({ googleId }: { googleId: string }) {
     const {
@@ -24,7 +25,7 @@ export default function UserProjects({ googleId }: { googleId: string }) {
         <Suspense fallback={<LoadingSpinner />}>
             <section className="flex flex-col justify-between h-[100%]">
                 <div className="h-[50vh]">
-                    <h1>Your Projects</h1>
+                    <h2>Your Projects</h2>
                     {isLoading ? (<ProjectSceleteon />) :
 
                         projects?.length > 0 ? (
@@ -37,27 +38,31 @@ export default function UserProjects({ googleId }: { googleId: string }) {
                             <p>No projects found.</p>
                         )}
                 </div>
-                {meta && (
-                    <div className="flex justify-between items-center ">
-                        <button
-                            onClick={prevPage}
+
+                <div className="flex items-center flex-row-reverse justify-between gap-7 mt-6">
+                    <div className='flex gap-2'>
+                        <Button
                             disabled={currentPage === 1}
-                            className="px-4 py-2 bg-gray-200 text-gray-800 rounded disabled:opacity-50"
+                            variant={'outline'}
+                            onClick={prevPage}
+                            className="h-[30px] text-[12px]  rounded-lg  disabled:cursor-not-allowed"
                         >
                             Previous
-                        </button>
-                        <span>
-                            Page {meta.currentPage} of {meta.totalPages}
-                        </span>
-                        <button
+                        </Button>
+                        <Button
+                            disabled={currentPage === meta?.totalPages || isLoading}
+                            variant={'outline'}
                             onClick={nextPage}
-                            disabled={currentPage === meta.totalPages}
-                            className="px-4 py-2 bg-gray-200 text-gray-800 rounded disabled:opacity-50"
+
+                            className=" text-[12px] h-[30px] rounded-lg  disabled:cursor-not-allowed"
                         >
                             Next
-                        </button>
+                        </Button>
                     </div>
-                )}
+                    <span className="text-[12px] font-normal">
+                        Page {meta?.currentPage} of {meta?.totalPages}
+                    </span>
+                </div>
             </section>
         </Suspense>
     );

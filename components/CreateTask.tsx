@@ -34,6 +34,7 @@ const CreateTask = ({ projectId }: { projectId: string }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState<TaskStatus>(TaskStatus.TO_DO);
+    const [loading, setLoading] = useState(false)
     const { mutate } = useCreateTask(projectId);
 
     const handleStatusChange = (value: string) => {
@@ -43,26 +44,32 @@ const CreateTask = ({ projectId }: { projectId: string }) => {
 
     const handleSubmit = (e?: React.FormEvent) => {
         if (e) e.preventDefault();
-
-        if (!title || !description || !status) {
-            return toast.error("All fields are required");
-        }
-
-        mutate(
-            {
-                projectId,
-                taskData: { title, description, status },
-            },
-            {
-                onSuccess: () => {
-                    // Clear fields without closing dialog
-                    setTitle('');
-                    setDescription('');
-                    setStatus(TaskStatus.TO_DO);
-                },
+        try {
+            if (!title || !description || !status) {
+                return toast.error("All fields are required");
             }
-        );
+            setLoading(true)
+
+            mutate(
+                {
+                    projectId,
+                    taskData: { title, description, status },
+                },
+                {
+                    onSuccess: () => {
+                        setTitle('');
+                        setDescription('');
+                        setStatus(TaskStatus.TO_DO);
+                        setLoading(false)
+                    },
+                }
+            );
+        } catch (error) {
+            console.log(error);
+
+        }
     };
+
 
     return (
         <Dialog>
@@ -80,7 +87,7 @@ const CreateTask = ({ projectId }: { projectId: string }) => {
                 <DialogHeader>
                     <DialogTitle>Add new Task</DialogTitle>
                     <DialogDescription>
-                        Create your work plans here. Click save when you're done.
+                        Create your work plans here. Click add when you're done.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -127,7 +134,7 @@ const CreateTask = ({ projectId }: { projectId: string }) => {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit" onClick={handleSubmit}>Add</Button>
+                    <Button type="submit" onClick={handleSubmit} disabled={loading}>{!loading ?'Add': 'creating...'}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

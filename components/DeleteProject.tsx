@@ -12,6 +12,7 @@ import {
 import { useDeleteProject } from '@/hooks/useDeleteProject';
 
 import { Button } from "@/components/ui/button"
+import { MdDelete } from "react-icons/md";
 const DeleteProject = ({ googleId, id }: any) => {
 
     const deleteProjectMutation = useDeleteProject(googleId);
@@ -22,7 +23,7 @@ const DeleteProject = ({ googleId, id }: any) => {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="destructive">Delete</Button>
+                <Button variant="outline"><MdDelete color="red"/></Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

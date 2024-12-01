@@ -15,6 +15,7 @@ const Navbar = async () => {
         </div>
       </Link>
       <div className='flex justify-between items-center gap-3'>
+
         <SignedOut>
           <SignInButton />
         </SignedOut>

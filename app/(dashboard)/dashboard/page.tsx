@@ -9,13 +9,13 @@ const Dashboard = async () => {
   const clerkUser = await currentUser()
   await saveUserToDatabase(clerkUser)
   return (
-    <div className='px-16 pt-4 h-[82vh]'>
-      <div className='flex justify-between mt-[50px]'>
-        <h1 className='text-2xl font-bold'>Welcom {clerkUser?.firstName}</h1>
+    <main className='px-16 pt-4 h-[82vh]'>
+      <header className='flex justify-between mt-[50px]'>
+        <b className='text-2xl'>Welcom {clerkUser?.firstName}</b>
         <CreateProject googleId={clerkUser?.id!} />
-      </div>
+      </header>
       <UserProjects googleId={clerkUser?.id!} />
-    </div>
+    </main>
   )
 }
 
