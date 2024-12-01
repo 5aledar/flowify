@@ -6,7 +6,6 @@ import Image from 'next/image'
 import axios from 'axios'
 
 const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }) => {
-    const id = parseInt(projectId)
     
     const [editing, setEditing] = useState(false)
     const [loading, setLoading] = useState(false)
