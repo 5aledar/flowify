@@ -24,7 +24,7 @@ const Pagenation = ({ currentPage, prevPage, nextPage, isLoading, meta }: any) =
                     Next
                 </Button>
             </div>
-            <span className="text-[12px] font-normal">
+            <span className="text-[12px] font-normal w-[100px]">
                 Page {meta?.currentPage} of {meta?.totalPages}
             </span>
         </div>

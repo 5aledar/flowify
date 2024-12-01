@@ -14,7 +14,7 @@ const TaskContainer = ({ id }: { id: string }) => {
         changeSortOption(sortValue === "Oldest" ? "older" : "newer");
     };
     return (
-        <div className="w-full h-[80vh] py-10">
+        <div className="w-full h-full flex flex-col gap-6 ">
             <header className='mb-4 flex justify-between items-center'>
                 <div className='flex items-center'>
                     <p className="mr-2">Sort by:</p>

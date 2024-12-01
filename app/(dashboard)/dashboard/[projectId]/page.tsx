@@ -14,13 +14,13 @@ const Project = () => {
 
 
   return (
-    <div className='flex flex-col items-center px-12'>
-      <div className='flex w-full justify-between mt-[50px] items-center pt-8'>
+    <main className='flex flex-col items-center px-12'>
+      <header className='flex w-full justify-between my-[25px] items-center pt-8'>
         {isLoading && <TitleSkeleton />}
         {data?.name && <ProjectTitle title={data?.name} projectId={projectId} />}
-      </div>
+      </header>
       <TaskContainer id={projectId} />
-    </div>
+    </main>
   )
 }
 
