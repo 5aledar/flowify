@@ -7,11 +7,11 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 const Navbar = async () => {
   return (
-    <nav className='flex justify-between fixed w-full backdrop-blur-lg items-center h-[55px] px-12'>
-      <Link href={'/dashboard'}>
+    <nav className='flex justify-between fixed w-full backdrop-blur-[50px] text-white items-center md:h-[55px] h-[40px] md:px-12 px-6 z-50'>
+      <Link href={'/'}>
         <div className='flex gap-2 items-center'>
           <Image src={'/logo.png'} alt='logo' width={32} height={32} />
-          <p className='font-bold'>Flowify</p>
+          <p className='font-bold text-sm md:text-md'>Flowify</p>
         </div>
       </Link>
       <div className='flex justify-between items-center gap-3'>

@@ -87,4 +87,7 @@ body {
   .loading-spinner {
     @apply w-10 h-10  border-solid rounded-full animate-spin bg-gradient-to-r from-pink-500 to-purple-600
   }
+  .bg-header{
+    @apply  h-fit flex m-auto flex-col  md:max-w-[45%] gap-5 justify-center md:p-16 p-8 items-start opacity-90 rounded-2xl bg-gradient-to-t  from-pink-500 to-purple-600
+  }
 }
