@@ -5,7 +5,7 @@ import Features from '@/components/Features'
 
 const Home = async () => {
   return (
-    <main className='p-12 w-full md:h-[100vh] h-fit flex justify-center items-center   bg-cover' style={{ backgroundImage: 'url("/bg-img.jpg")', backgroundRepeat: 'no-repeat' }} >
+    <main className='main-home' style={{ backgroundImage: 'url("/bg-img.jpg")', backgroundRepeat: 'no-repeat' }} >
       <div className='flex w-full gap-7 h-[50%] items-center mt-[40px] justify-center flex-col md:flex-row'>
 
         <header className="bg-header">
