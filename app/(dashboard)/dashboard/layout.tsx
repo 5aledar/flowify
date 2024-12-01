@@ -5,7 +5,7 @@ export const metadata: Metadata = {
         template: '%s | Flowify',
         default: 'Dashboard'
       },
-    description: "description",
+    description: "user dashboard",
 };
 export default function IndexLayout({
     children,

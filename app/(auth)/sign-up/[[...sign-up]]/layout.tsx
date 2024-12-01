@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Sign up",
-  description: "description",
+  description: "sign up with google",
 };
 
 export default function IndexLayout({

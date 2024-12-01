@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Project",
-    description: "description",
+    description: "user project",
 };
 export default function IndexLayout({
     children,

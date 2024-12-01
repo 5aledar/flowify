@@ -49,7 +49,7 @@ const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }
     }, [editing])
 
     return (
-            <div  className='flex w-full justify-start gap-4  items-center pt-8'>
+            <header  className='flex w-full justify-start gap-4  items-center pt-8'>
                 {editing && !loading ? (
                     <Input
                         type='text'
@@ -75,7 +75,7 @@ const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }
                     />
                 )}
                 {loading && <p className='text-sm text-gray-400'>saving...</p>}
-            </div>
+            </header>
     )
 }
 
