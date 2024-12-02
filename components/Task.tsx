@@ -4,17 +4,38 @@ import { TableCell, TableRow } from "@/components/ui/table"
 import { useUpdateTaskStatus } from '@/hooks/useUpdateTaskStatus'
 import { Badge } from './ui/badge'
 import DeleteTask from './DeleteTask'
+import { Task } from '@prisma/client'
+import { useDrag, useDrop } from 'react-dnd';
 enum TaskStatus {
     TO_DO = "TO_DO",
     IN_PROGRESS = "IN_PROGRESS",
     COMPLETED = "COMPLETED",
 }
-const TaskItem = ({ task, projectId }: any) => {
+interface TaskItemProps {
+    task: Task
+    projectId: string;
+    index: number;
+    moveTask: (fromIndex: number, toIndex: number) => void;
+}
+
+const TaskItem: React.FC<TaskItemProps> = ({ task, projectId, index, moveTask }) => {
 
     const [currentStatus, setCurrentStatus] = useState(task.status);
     const { mutate: updateStatus } = useUpdateTaskStatus();
-
-    const handleStatusChange = (newStatus: string) => {
+    const [, dragRef] = useDrag({
+        type: 'TASK',
+        item: { id: task.id, index },
+    });
+    const [, dropRef] = useDrop({
+        accept: 'TASK',
+        hover: (draggedItem: { id: number; index: number }) => {
+            if (draggedItem.index !== index) {
+                moveTask(draggedItem.index, index);
+                draggedItem.index = index;
+            }
+        },
+    });
+    const handleStatusChange = (newStatus: "TO_DO" | "IN_PROGRESS" | "COMPLETED") => {
         if (newStatus == currentStatus) {
             return
         }
@@ -25,9 +46,13 @@ const TaskItem = ({ task, projectId }: any) => {
             console.log(error);
         }
     };
+    const combinedRef = (node: HTMLTableRowElement | null) => {
+        dragRef(node);
+        dropRef(node);
+    };
 
     return (
-        <TableRow key={task.id}>
+        <TableRow ref={combinedRef} key={task.id}>
             <TableCell className="font-semibold text-[12px]">{task.title}</TableCell>
             <TableCell>
                 <Select value={currentStatus} onValueChange={handleStatusChange}>

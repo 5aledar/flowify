@@ -1,40 +1,60 @@
+'use client'
 import { useFetchTasks } from '@/hooks/useFetchTasks';
-import TasksTable from './TasksTable';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
-import { Button } from './ui/button';
 import CreateTask from './CreateTask';
 import TableSkeleton from './TableSkeleton';
 import Pagenation from './Pagenation';
+import { useFilterStore } from '@/store/useFilterStore';
+import Filters from './Filters';
+import TaskItem from './Task';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const TaskContainer = ({ id }: { id: string }) => {
-    const { tasks, meta, nextPage, prevPage, currentPage, sortOption, changeSortOption, isLoading } = useFetchTasks(id);
+    const { status } = useFilterStore();
+  const { tasks, meta, nextPage, prevPage, currentPage, isLoading } = useFetchTasks(id);
+  const [todoTasks, setTodoTasks] = useState(tasks?.ToDo || []);
 
-    const handleSortChange = (sortValue: string) => {
-        changeSortOption(sortValue === "Oldest" ? "older" : "newer");
-    };
+  useEffect(() => {
+    setTodoTasks(tasks?.ToDo || []);
+  }, [tasks, isLoading]);
+
+  const updateTaskOrder = async (projectId: string, reorderedTasks: { id: number; order: number }[]) => {
+    try {
+      await axios.patch(`/api/projects/${projectId}/tasks`, { reorderedTasks });
+    } catch (error) {
+      console.error('Failed to update task order:', error);
+    }
+  };
+
+  const moveTask = (fromIndex: number, toIndex: number) => {
+    const updatedTasks = [...todoTasks];
+    const [movedTask] = updatedTasks.splice(fromIndex, 1);
+    updatedTasks.splice(toIndex, 0, movedTask);
+
+    // Update task orders locally
+    setTodoTasks(
+      updatedTasks.map((task, index) => ({
+        ...task,
+        order: index + 1,
+      }))
+    );
+
+    // Optionally, send updated task order to the backend
+    const reorderedTasks = updatedTasks.map((task, index) => ({
+      id: task.id,
+      order: index + 1,
+    }));
+    updateTaskOrder(id, reorderedTasks);
+  };
     return (
         <div className="w-full h-full flex flex-col gap-6 ">
             <header className='mb-4 flex justify-between items-center'>
-                <div className='flex items-center'>
-                    <p className="mr-2">Sort by:</p>
-                    <Select
-                        onValueChange={handleSortChange}
-                        defaultValue={sortOption === "older" ? "Oldest" : "Newest"}
-                    >
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder={sortOption === "older" ? "Oldest" : "Newest"} />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="Oldest">Oldest</SelectItem>
-                            <SelectItem value="Newest">Newest</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
+                <Filters id={id} />
                 <CreateTask projectId={id} />
             </header>
             <section className='h-[50vh] mb-[60px]'>
-                <Table className='w-full'>
+                <Table className='w-full' >
                     <TableHeader className='shadow-md '>
                         <TableRow>
                             <TableHead className="w-[100px]">Title</TableHead>
@@ -48,15 +68,27 @@ const TaskContainer = ({ id }: { id: string }) => {
                             <TableSkeleton />
                         ) : (
                             <TableBody >
-                                {tasks?.ToDo.length! > 0 &&
-                                    <TasksTable tasks={tasks?.ToDo} id={id} />
+                                {(status == 'All' || status == 'To-do') && tasks?.ToDo.length! > 0 &&
+                                    todoTasks?.map((task, index) => (
+                                        <TaskItem
+                                            key={task.id}
+                                            task={task}
+                                            projectId={id}
+                                            index={index}
+                                            moveTask={moveTask}
+                                        />
+                                    ))
                                 }
-                                {tasks?.InProgress.length! > 0 &&
-                                    <TasksTable tasks={tasks?.InProgress} id={id} />
+                                {/* {(status == 'All' || status == 'in-progress') && tasks?.InProgress.length! > 0 &&
+                                    tasks?.InProgress.map((task) => (
+                                        <TaskItem task={task} projectId={id} key={task.id}  />
+                                    ))
                                 }
-                                {tasks?.Completed.length! > 0 &&
-                                    <TasksTable tasks={tasks?.Completed} id={id} />
-                                }
+                                {(status == 'All' || status == 'completed') && tasks?.Completed.length! > 0 &&
+                                    tasks?.Completed.map((task) => (
+                                        <TaskItem task={task} projectId={id} key={task.id} />
+                                    ))
+                                } */}
                             </TableBody>)}
                 </Table>
             </section>

@@ -1,10 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+
+
+
+
 
 // DELETE handler
 export async function DELETE(
   req: Request,
-  { params }: { params:any }
+  { params }: { params: any }
 ) {
   const { id } = params;
 
@@ -47,9 +51,13 @@ export async function DELETE(
   }
 }
 
+
+
+
+
 export async function GET(
   req: Request,
-  { params }: { params: any} // Updated typing
+  { params }: { params: any }
 ) {
   const { id } = params;
 
@@ -91,6 +99,10 @@ export async function GET(
     );
   }
 }
+
+
+
+
 
 // PUT handler
 export async function PUT(
@@ -135,3 +147,8 @@ export async function PUT(
     );
   }
 }
+
+
+
+
+

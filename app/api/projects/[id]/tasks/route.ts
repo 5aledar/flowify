@@ -8,7 +8,8 @@ export async function POST(
   try {
     const { params } = context;
     const { title, description, status } = await req.json();
-    const projectId = parseInt(await params.id, 10); 
+    const projectId = parseInt(await params.id, 10);
+
     if (!title || !description || !status || isNaN(projectId)) {
       return NextResponse.json(
         { error: "Missing required fields or invalid project ID" },
@@ -16,12 +17,22 @@ export async function POST(
       );
     }
 
+    // Fetch the highest current order in the project
+    const highestOrder = await prisma.task.findFirst({
+      where: { projectId },
+      orderBy: { order: "desc" }, // Get the highest order value
+      select: { order: true },
+    });
+
+    const nextOrder = (highestOrder?.order || 0) + 1;
+
     const task = await prisma.task.create({
       data: {
         title,
         description,
         status,
         projectId,
+        order: nextOrder, // Assign the next available order
       },
     });
 
@@ -54,7 +65,7 @@ export async function GET(
     const { searchParams } = new URL(req.url);
     const page = Number(searchParams.get("page")) || 1;
     const pageSize = 7;
-    const sort = searchParams.get("sort") || "older"; 
+    const sort = searchParams.get("sort") || "older";
 
     const orderBy = sort === "newer" ? "desc" : "asc";
 
@@ -64,9 +75,9 @@ export async function GET(
       },
       skip: (page - 1) * pageSize,
       take: pageSize,
-      
+
       orderBy: {
-        createdAt: orderBy, 
+        order: 'asc'
       },
     });
 
@@ -106,5 +117,31 @@ export async function GET(
 }
 
 
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const { id } = params;
+    const body = await req.json();
 
+    // Expecting an array of tasks with their new order
+    const { reorderedTasks } = body;
+
+    if (!Array.isArray(reorderedTasks)) {
+      return NextResponse.json({ error: "Invalid data format" }, { status: 400 });
+    }
+
+    const updatePromises = reorderedTasks.map((task: { id: number; order: number }) =>
+      prisma.task.update({
+        where: { id: task.id },
+        data: { order: task.order },
+      })
+    );
+
+    await Promise.all(updatePromises);
+
+    return NextResponse.json({ message: "Tasks reordered successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("Error updating task order:", error);
+    return NextResponse.json({ error: "Failed to update task order" }, { status: 500 });
+  }
+}
 

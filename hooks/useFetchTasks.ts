@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
+import { useFilterStore } from "@/store/useFilterStore";
+import { Task } from "@prisma/client";
 interface GroupedTasks {
-  ToDo: any[];
-  InProgress: any[];
-  Completed: any[];
+  ToDo: Task[];
+  InProgress: Task[];
+  Completed: Task[];
 }
 
 interface PaginationMeta {
@@ -20,23 +21,24 @@ interface FetchTasksResponse {
   pagination: PaginationMeta;
 }
 
-// Fetch Tasks API Function
 const fetchTasks = async (
   projectId: string,
   page: number,
   sort: string
 ): Promise<FetchTasksResponse> => {
-  const { data } = await axios.get(
+  const { data }: { data: FetchTasksResponse } = await axios.get(
     `/api/projects/${projectId}/tasks?page=${page}&sort=${sort}`
   );
+  console.log(data);
+  
 
-  return data;
+  return data!;
 };
 
-// Custom Hook
 export const useFetchTasks = (projectId: string) => {
+  const { date } = useFilterStore()
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortOption, setSortOption] = useState<"older" | "newer">("older"); // Default sort
+  const [sortOption, setSortOption] = useState<"older" | "newer">(date); // Default sort
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["tasks", projectId, currentPage, sortOption],
@@ -59,9 +61,10 @@ export const useFetchTasks = (projectId: string) => {
     setSortOption(newSort);
     setCurrentPage(1); // Reset to the first page when sorting changes
   };
+console.log(data);
 
   return {
-    tasks: data?.tasks,
+    tasks: data?.tasks!,
     meta: data?.pagination,
     isLoading,
     isError,

@@ -5,13 +5,12 @@ import { useFetchProject } from '@/hooks/useFethcProject'
 import TaskContainer from '@/components/TaskContainer'
 import ProjectTitle from '@/components/ProjectTitle'
 import TitleSkeleton from '@/components/TitleSkeleton'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 const Project = () => {
   const { projectId }: { projectId: string } = useParams()
   const id = parseInt(projectId)
   const { data, isLoading } = useFetchProject(id)
-
-
-
 
   return (
     <main className='flex flex-col items-center px-12'>
@@ -19,7 +18,9 @@ const Project = () => {
         {isLoading && <TitleSkeleton />}
         {data?.name && <ProjectTitle title={data?.name} projectId={projectId} />}
       </header>
-      <TaskContainer id={projectId} />
+      <DndProvider backend={HTML5Backend}>
+        <TaskContainer id={projectId} />
+      </DndProvider>
     </main>
   )
 }

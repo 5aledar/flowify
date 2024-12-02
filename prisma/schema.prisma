@@ -30,8 +30,9 @@ model Task {
   status      Status
   projectId   Int
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now()) // Automatically set when the record is created
-  updatedAt   DateTime @default(now()) @updatedAt // Initially set to now and auto-updated on changes
+  order       Int // New field for ordering tasks
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 }
 
 enum Status {
