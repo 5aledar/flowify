@@ -117,7 +117,7 @@ export async function GET(
 }
 
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: any }) {
   try {
     const { id } = params;
     const body = await req.json();
