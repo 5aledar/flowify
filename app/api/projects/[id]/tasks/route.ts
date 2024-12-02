@@ -89,7 +89,6 @@ export async function GET(
         projectId: Number(id),
       },
     });
-
     const totalPages = Math.ceil(totalTasks / pageSize);
 
     const groupedTasks = {
