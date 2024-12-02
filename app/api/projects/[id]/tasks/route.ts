@@ -94,10 +94,10 @@ export async function GET(
       InProgress: tasks.filter((task) => task.status === "IN_PROGRESS"),
       Completed: tasks.filter((task) => task.status === "COMPLETED"),
     };
-
+    const orderedTasks = [...groupedTasks.ToDo, ...groupedTasks.InProgress, ...groupedTasks.Completed]
     return NextResponse.json(
       {
-        tasks: groupedTasks,
+        tasks: orderedTasks,
         pagination: {
           currentPage: page,
           totalPages,

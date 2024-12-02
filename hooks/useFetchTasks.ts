@@ -3,11 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useFilterStore } from "@/store/useFilterStore";
 import { Task } from "@prisma/client";
-interface GroupedTasks {
-  ToDo: Task[];
-  InProgress: Task[];
-  Completed: Task[];
-}
+
 
 interface PaginationMeta {
   currentPage: number;
@@ -17,7 +13,7 @@ interface PaginationMeta {
 }
 
 interface FetchTasksResponse {
-  tasks: GroupedTasks;
+  tasks: Task[];
   pagination: PaginationMeta;
 }
 
