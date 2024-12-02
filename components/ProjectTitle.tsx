@@ -59,7 +59,7 @@ const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }
                         onChange={(e) => setDocumentTitle(e.target.value)}
                         onKeyDown={updateTitleHandler}
                         disabled={!editing}
-                        className='project-title-input'
+                        className='project-title-input w-[200px] text-right p-0'
                     />
                 ) : (
                     <p className='project-title w-[200px]'>{documentTitle}</p>

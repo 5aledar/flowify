@@ -31,9 +31,9 @@ const TaskContainer = ({ id }: { id: string }) => {
   const moveTask = (fromIndex: number, toIndex: number) => {
     const updatedTasks = [...tickets];
     const [movedTask] = updatedTasks.splice(fromIndex, 1);
+
     updatedTasks.splice(toIndex, 0, movedTask);
 
-    // Update task orders locally
     setTickets(
       updatedTasks.map((task, index) => ({
         ...task,
@@ -41,7 +41,6 @@ const TaskContainer = ({ id }: { id: string }) => {
       }))
     );
 
-    // Optionally, send updated task order to the backend
     const reorderedTasks = updatedTasks.map((task, index) => ({
       id: task.id,
       order: index + 1,
@@ -69,7 +68,7 @@ const TaskContainer = ({ id }: { id: string }) => {
               <TableSkeleton />
             ) : (
               <TableBody >
-                {(status == 'All' || status == 'To-do') && tasks?.length! > 0 &&
+                {tasks?.length! > 0 &&
                   tickets?.map((task, index) => (
                     <TaskItem
                       key={task.id}

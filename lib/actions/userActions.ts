@@ -2,7 +2,6 @@ import { prisma } from "./../prisma";
 export const saveUserToDatabase = async (clerkUser: any) => {
   try {
     const email = clerkUser.emailAddresses[0]?.emailAddress;
-    console.log(email);
     
     if (!email) {
       throw new Error("User email not found.");

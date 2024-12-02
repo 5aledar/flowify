@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { Task } from "@prisma/client";
 
 export async function POST(
   req: NextRequest,
@@ -56,6 +57,7 @@ export async function GET(
     const { id } = params;
 
     if (isNaN(Number(id))) {
+
       return NextResponse.json(
         { error: "Invalid project ID" },
         { status: 400 }
@@ -66,7 +68,8 @@ export async function GET(
     const page = Number(searchParams.get("page")) || 1;
     const pageSize = 7;
     const sort = searchParams.get("sort") || "older";
-
+    const filter = searchParams.get("filter") ;
+    
     const orderBy = sort === "newer" ? "desc" : "asc";
 
     const tasks = await prisma.task.findMany({
@@ -94,7 +97,17 @@ export async function GET(
       InProgress: tasks.filter((task) => task.status === "IN_PROGRESS"),
       Completed: tasks.filter((task) => task.status === "COMPLETED"),
     };
-    const orderedTasks = [...groupedTasks.ToDo, ...groupedTasks.InProgress, ...groupedTasks.Completed]
+    let orderedTasks: Task[] = []
+    if (filter == 'All' || filter == 'To-do') {
+      orderedTasks = [...groupedTasks.ToDo, ...groupedTasks.InProgress, ...groupedTasks.Completed]
+    } else if (filter == 'in-progress') {
+      orderedTasks = [...groupedTasks.InProgress, ...groupedTasks.ToDo, ...groupedTasks.Completed]
+    } else if (filter == 'completed') {
+      orderedTasks = [...groupedTasks.Completed, ...groupedTasks.ToDo, ...groupedTasks.InProgress]
+    } else {
+      orderedTasks = [...groupedTasks.ToDo, ...groupedTasks.InProgress, ...groupedTasks.Completed]
+    }
+
     return NextResponse.json(
       {
         tasks: orderedTasks,
@@ -117,7 +130,7 @@ export async function GET(
 }
 
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: any }) {
   try {
     const { id } = params;
     const body = await req.json();

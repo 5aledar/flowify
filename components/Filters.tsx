@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Badge } from './ui/badge'
 import { useFilterStore } from '@/store/useFilterStore'
 const Filters = ({ id }: { id: string }) => {
-    const { date, setDate, status, setStatus } = useFilterStore()
+    const { date, setDate, setStatus } = useFilterStore()
     const handleSortChange = (date: string) => {
         setDate(date === "Oldest" ? "older" : "newer");
     };
