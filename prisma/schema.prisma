@@ -43,8 +43,8 @@ model Invitation {
   id          Int              @id @default(autoincrement())
   projectId   Int
   project     Project          @relation("ProjectInvitations", fields: [projectId], references: [id], onDelete: Cascade)
-  userId      Int
-  user        User             @relation("UserInvitations", fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User             @relation("UserInvitations", fields: [userId], references: [googleId], onDelete: Cascade)
   permissions Permission
   status      InvitationStatus
   createdAt   DateTime         @default(now())
@@ -54,8 +54,8 @@ model ProjectAccess {
   id          Int        @id @default(autoincrement())
   projectId   Int
   project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  userId      Int
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User       @relation(fields: [userId], references: [googleId], onDelete: Cascade)
   permissions Permission
   createdAt   DateTime   @default(now())
 }

@@ -37,7 +37,7 @@ CREATE TABLE `Task` (
 CREATE TABLE `Invitation` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `projectId` INTEGER NOT NULL,
-    `userId` INTEGER NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
     `permissions` ENUM('READ', 'READ_WRITE') NOT NULL,
     `status` ENUM('PENDING', 'ACCEPTED', 'REJECTED') NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -49,7 +49,7 @@ CREATE TABLE `Invitation` (
 CREATE TABLE `ProjectAccess` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `projectId` INTEGER NOT NULL,
-    `userId` INTEGER NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
     `permissions` ENUM('READ', 'READ_WRITE') NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -66,10 +66,10 @@ ALTER TABLE `Task` ADD CONSTRAINT `Task_projectId_fkey` FOREIGN KEY (`projectId`
 ALTER TABLE `Invitation` ADD CONSTRAINT `Invitation_projectId_fkey` FOREIGN KEY (`projectId`) REFERENCES `Project`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Invitation` ADD CONSTRAINT `Invitation_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Invitation` ADD CONSTRAINT `Invitation_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`googleId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ProjectAccess` ADD CONSTRAINT `ProjectAccess_projectId_fkey` FOREIGN KEY (`projectId`) REFERENCES `Project`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `ProjectAccess` ADD CONSTRAINT `ProjectAccess_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ProjectAccess` ADD CONSTRAINT `ProjectAccess_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`googleId`) ON DELETE CASCADE ON UPDATE CASCADE;
