@@ -12,7 +12,7 @@ const fetchInvites = async (userEmail: string) => {
 
 }
 
-const useFetchInvites = (userEmail: string) => {
+export const useFetchInvites = (userEmail: string) => {
     const { data, error, isLoading } = useQuery({
         queryKey: ['invites', userEmail],
         queryFn: () => fetchInvites(userEmail)

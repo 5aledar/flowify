@@ -1,17 +1,29 @@
+'use client'
 import React from 'react'
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { IoIosNotifications } from "react-icons/io";
+import Invitation from './Invitation';
+import { useFetchInvites } from '@/hooks/useFetchInvites';
+const Notifications = ({ userEmail }: { userEmail: string }) => {
+    const { data, error, isLoading } = useFetchInvites(userEmail)
 
-const notifications = () => {
     return (
         <Popover>
-            <PopoverTrigger>Open</PopoverTrigger>
-            <PopoverContent>Place content for the popover here.</PopoverContent>
-        </Popover>
+            <PopoverTrigger>
+                <IoIosNotifications />
+            </PopoverTrigger>
+            <PopoverContent>
+                {data?.invitations.map((invite: any) => (
+                    <Invitation key={invite.id} id={invite.id} projectId={invite.projectId} permissions={invite.permissions} />
+                ))
+                }
+            </PopoverContent>
+        </Popover >
     )
 }
 
-export default notifications
+export default Notifications

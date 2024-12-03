@@ -70,3 +70,45 @@ export async function POST(req: NextRequest) {
         );
     }
 }
+
+
+
+export async function GET(req: NextRequest) {
+    try {
+        // Get email from query parameter
+        const url = new URL(req.url);
+        const email = url.searchParams.get('email');
+        console.log(email);
+
+        // Validate if email is provided
+        if (!email) {
+            return new NextResponse(
+                JSON.stringify({ success: false, error: 'Email is required' }),
+                { status: 400 }
+            );
+        }
+
+        // Fetch all invitations for the given email
+        const invitations = await prisma.invitation.findMany({
+            where: {
+                userEmail: email,
+                status: 'PENDING'
+            },
+        });
+
+        // Check if any invitations were found
+        if (invitations.length === 0) {
+            return new NextResponse(
+                JSON.stringify({ success: true, invitations: [] }));
+        }
+
+        // Return the invitations
+        return new NextResponse(JSON.stringify({ success: true, invitations }), { status: 200 });
+    } catch (error) {
+        console.error('Error fetching invitations:', error);
+        return new NextResponse(
+            JSON.stringify({ success: false, error: 'Internal server error' }),
+            { status: 500 }
+        );
+    }
+}
