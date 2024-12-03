@@ -4,7 +4,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 import CreateTask from './CreateTask';
 import TableSkeleton from './TableSkeleton';
 import Pagenation from './Pagenation';
-import { useFilterStore } from '@/store/useFilterStore';
+import { useFilterStore } from '@/stores/useFilterStore';
 import Filters from './Filters';
 import TaskItem from './Task';
 import { useEffect, useState } from 'react';

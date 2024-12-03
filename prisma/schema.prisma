@@ -43,8 +43,8 @@ model Invitation {
   id          Int              @id @default(autoincrement())
   projectId   Int
   project     Project          @relation("ProjectInvitations", fields: [projectId], references: [id], onDelete: Cascade)
-  userId      String
-  user        User             @relation("UserInvitations", fields: [userId], references: [googleId], onDelete: Cascade)
+  userEmail   String
+  user        User             @relation("UserInvitations", fields: [userEmail], references: [email], onDelete: Cascade)
   permissions Permission
   status      InvitationStatus
   createdAt   DateTime         @default(now())

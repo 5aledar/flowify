@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useFilterStore } from "@/store/useFilterStore";
+import { useFilterStore } from "@/stores/useFilterStore";
 import { Task } from "@prisma/client";
 
 interface PaginationMeta {

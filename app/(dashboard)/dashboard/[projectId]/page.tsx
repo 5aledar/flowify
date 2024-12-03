@@ -7,6 +7,7 @@ import ProjectTitle from '@/components/ProjectTitle'
 import TitleSkeleton from '@/components/TitleSkeleton'
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import Invite from '@/components/Invite'
 const Project = () => {
   const { projectId }: { projectId: string } = useParams()
   const id = parseInt(projectId)
@@ -17,6 +18,7 @@ const Project = () => {
       <header className='flex w-full justify-between my-[25px] items-center pt-8'>
         {isLoading && <TitleSkeleton />}
         {data?.name && <ProjectTitle title={data?.name} projectId={projectId} />}
+        <Invite projectId={projectId} />
       </header>
       <DndProvider backend={HTML5Backend}>
         <TaskContainer id={projectId} />

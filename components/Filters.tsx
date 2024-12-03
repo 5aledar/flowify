@@ -1,7 +1,7 @@
 import React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { Badge } from './ui/badge'
-import { useFilterStore } from '@/store/useFilterStore'
+import { useFilterStore } from '@/stores/useFilterStore'
 const Filters = () => {
     const { date, setDate, setStatus } = useFilterStore()
     const handleSortChange = (date: string) => {
