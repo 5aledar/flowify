@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,8 +12,9 @@ export default function IndexLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <>
       {children}
-    </div>
+      <Footer />
+    </>
   );
 }

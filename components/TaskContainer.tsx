@@ -50,7 +50,7 @@ const TaskContainer = ({ id }: { id: string }) => {
   return (
     <div className="w-full h-full flex flex-col gap-6 ">
       <header className='mb-4 flex justify-between items-center'>
-        <Filters id={id} />
+        <Filters />
         <CreateTask projectId={id} />
       </header>
       <section className='h-[50vh] mb-[60px]'>

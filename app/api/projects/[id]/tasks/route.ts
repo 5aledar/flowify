@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { Task } from "@prisma/client";
+import { Prisma, Task } from "@prisma/client";
 
 export async function POST(
   req: NextRequest,
@@ -18,10 +18,9 @@ export async function POST(
       );
     }
 
-    // Fetch the highest current order in the project
     const highestOrder = await prisma.task.findFirst({
       where: { projectId },
-      orderBy: { order: "desc" }, // Get the highest order value
+      orderBy: { order: "desc" },
       select: { order: true },
     });
 
@@ -33,7 +32,7 @@ export async function POST(
         description,
         status,
         projectId,
-        order: nextOrder, // Assign the next available order
+        order: nextOrder,
       },
     });
 
@@ -68,9 +67,13 @@ export async function GET(
     const page = Number(searchParams.get("page")) || 1;
     const pageSize = 7;
     const sort = searchParams.get("sort") || "older";
-    const filter = searchParams.get("filter") ;
-    
-    const orderBy = sort === "newer" ? "desc" : "asc";
+    const filter = searchParams.get("filter");
+
+    const orderBy = sort === "newer" ? "desc" : sort === 'older' ? "asc" : null;
+
+    const orderByCondition: Prisma.TaskOrderByWithRelationInput = orderBy
+      ? { createdAt: orderBy as Prisma.SortOrder } 
+      : { order: 'asc' }; 
 
     const tasks = await prisma.task.findMany({
       where: {
@@ -78,10 +81,7 @@ export async function GET(
       },
       skip: (page - 1) * pageSize,
       take: pageSize,
-
-      orderBy: {
-        order: 'asc'
-      },
+      orderBy: orderByCondition,
     });
 
     const totalTasks = await prisma.task.count({
@@ -91,7 +91,7 @@ export async function GET(
     });
     const totalPages = Math.ceil(totalTasks / pageSize);
 
-    
+
     const groupedTasks = {
       ToDo: tasks.filter((task) => task.status === "TO_DO"),
       InProgress: tasks.filter((task) => task.status === "IN_PROGRESS"),

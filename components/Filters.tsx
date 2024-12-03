@@ -2,10 +2,11 @@ import React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { Badge } from './ui/badge'
 import { useFilterStore } from '@/store/useFilterStore'
-const Filters = ({ id }: { id: string }) => {
+const Filters = () => {
     const { date, setDate, setStatus } = useFilterStore()
     const handleSortChange = (date: string) => {
-        setDate(date === "Oldest" ? "older" : "newer");
+        setDate(date === "Oldest" ? "older" : date === 'Newest' ? "newer" : 'default');
+
     };
     const handleStatusChange = (status: 'All' | 'To-do' | 'in-progress' | 'completed') => {
         setStatus(status)
@@ -14,12 +15,13 @@ const Filters = ({ id }: { id: string }) => {
         <div className='flex items-center gap-4'>
             <Select
                 onValueChange={handleSortChange}
-                defaultValue={date === "older" ? "Oldest" : "Newest"}
+                defaultValue={'default'}
             >
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder={date === "older" ? "Oldest" : "Newest"} />
                 </SelectTrigger>
                 <SelectContent>
+                    <SelectItem value="default">Default</SelectItem>
                     <SelectItem value="Oldest">Oldest</SelectItem>
                     <SelectItem value="Newest">Newest</SelectItem>
                 </SelectContent>
