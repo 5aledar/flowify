@@ -8,19 +8,23 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  username String
-  email    String    @unique
-  googleId String    @unique
-  projects Project[]
+  id              Int             @id @default(autoincrement())
+  username        String
+  email           String          @unique
+  googleId        String          @unique
+  projects        Project[]       @relation("UserOwnedProjects")
+  invitations     Invitation[]    @relation("UserInvitations")
+  projectAccesses ProjectAccess[]
 }
 
 model Project {
-  id       Int    @id @default(autoincrement())
-  name     String
-  googleId String
-  user     User   @relation(fields: [googleId], references: [googleId], onDelete: Cascade)
-  tasks    Task[]
+  id              Int             @id @default(autoincrement())
+  name            String
+  ownerId         String // Renamed from googleId
+  owner           User            @relation("UserOwnedProjects", fields: [ownerId], references: [googleId], onDelete: Cascade)
+  tasks           Task[]
+  invitations     Invitation[]    @relation("ProjectInvitations")
+  projectAccesses ProjectAccess[]
 }
 
 model Task {
@@ -30,13 +34,45 @@ model Task {
   status      Status
   projectId   Int
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  order       Int // New field for ordering tasks
+  order       Int // Field for ordering tasks
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model Invitation {
+  id          Int              @id @default(autoincrement())
+  projectId   Int
+  project     Project          @relation("ProjectInvitations", fields: [projectId], references: [id], onDelete: Cascade)
+  userId      Int
+  user        User             @relation("UserInvitations", fields: [userId], references: [id], onDelete: Cascade)
+  permissions Permission
+  status      InvitationStatus
+  createdAt   DateTime         @default(now())
+}
+
+model ProjectAccess {
+  id          Int        @id @default(autoincrement())
+  projectId   Int
+  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permissions Permission
+  createdAt   DateTime   @default(now())
 }
 
 enum Status {
   TO_DO
   IN_PROGRESS
   COMPLETED
+}
+
+enum Permission {
+  READ
+  READ_WRITE
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
