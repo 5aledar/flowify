@@ -1,10 +1,21 @@
+'use client'
 import { useFetchProject } from '@/hooks/useFethcProject'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from './ui/button'
-import { useUser } from '@clerk/nextjs'
+import { useUpdateInvitationStatus } from '@/hooks/useUpdateInvitation'
 const Invitation = ({ invite }: any) => {
     const { data, error, isLoading } = useFetchProject(invite.projectId)
-    
+    const { mutate } = useUpdateInvitationStatus();
+    const [status, setStatus] = useState<'ACCEPTED' | 'DECLINED' | null>(null);
+    const handleAccept = async () => {
+        try {
+            setStatus('ACCEPTED');
+            await mutate({ id: invite.id, status: 'ACCEPTED' });
+        } catch (error) {
+            setStatus(null); // reset status on error
+        }
+    };
+
     return (
         <>
             {!isLoading &&
@@ -14,7 +25,7 @@ const Invitation = ({ invite }: any) => {
                     </p>
                     <div className='flex items-center'>
                         <p className='text-xs text-gray-500'>{invite.createdAt}</p>
-                        <Button className='h-[30px] text-xs' variant={'link'}>view invite</Button>
+                        <Button className='h-[30px] text-xs' variant={'link'} onClick={handleAccept}>accept</Button>
                     </div>
                 </div>
             }

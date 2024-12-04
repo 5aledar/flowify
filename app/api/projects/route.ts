@@ -33,13 +33,11 @@ export async function POST(req: NextRequest) {
 }
 
 
-
 export async function GET(req: Request) {
     const url = new URL(req.url);
     const email = url.searchParams.get("email");
 
     try {
-
         if (!email) {
             return NextResponse.json(
                 { error: "Google ID is required" },
@@ -47,7 +45,6 @@ export async function GET(req: Request) {
             );
         }
 
-        const url = new URL(req.url);
         const page = parseInt(url.searchParams.get("page") || "1", 10); // Default to page 1
         const pageSize = 5;
 
@@ -63,8 +60,8 @@ export async function GET(req: Request) {
                                     email,
                                 },
                             },
-                        },
-                    }, // Projects shared with the user
+                        }, // Projects shared with the user
+                    },
                 ],
             },
             include: {

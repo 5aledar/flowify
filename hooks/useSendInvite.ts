@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 
 // Define sendInvite function
 const sendInvite = async (senderEmail: string, userEmail: string, projectId: string, permission: string) => {
-   console.log({senderEmail, userEmail, projectId, permission});
    
     if (!senderEmail || !userEmail || !projectId || !permission) {
         toast.error('missing credintials')

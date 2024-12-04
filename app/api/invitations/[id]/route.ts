@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma'; // Adjust the import based on your setup
 
-export async function PATCH(req: NextRequest) {
+export async function PATCH(req: NextRequest, { params }: any) {
     try {
         // Extract the `id` from the route and parse the request body
-        const { searchParams } = new URL(req.url);
-        const invitationId = searchParams.get('id');
+        const invitationId = params.id
         const { status } = await req.json();
 
         // Validate the input
@@ -28,16 +27,14 @@ export async function PATCH(req: NextRequest) {
             where: { id: Number(invitationId) },
             data: { status },
         });
-        const newUser = await prisma.user.findUnique({
-            where: { email: updatedInvitation.userEmail }
-        })
+
         // Automatically create a ProjectAccess if the invitation is accepted
         if (status === 'ACCEPTED') {
             const projectAccess = await prisma.projectAccess.create({
                 data: {
                     projectId: updatedInvitation.projectId,
                     userEmail: updatedInvitation?.userEmail,
-                    permissions: updatedInvitation.permissions, // Copy permissions from the invitation
+                    permissions: updatedInvitation.permissions,
                 },
             });
 

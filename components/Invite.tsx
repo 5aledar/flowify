@@ -44,10 +44,11 @@ const Invite = ({ projectId }: { projectId: string }) => {
         try {
             setLoading(true);
             await mutate({ senderEmail: user?.emailAddresses[0].emailAddress!, userEmail, projectId, permission });
-            setLoading(false);
         } catch (error) {
+            console.log("Failed to send invite:", error);
             setLoading(false);
-            console.error("Failed to send invite:", error);
+        }finally{
+            setLoading(false);
         }
     };
     return (
