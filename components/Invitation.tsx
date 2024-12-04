@@ -12,7 +12,7 @@ const Invitation = ({ invite }: any) => {
             setStatus('ACCEPTED');
             await mutate({ id: invite.id, status: 'ACCEPTED' });
         } catch (error) {
-            setStatus(null); // reset status on error
+            setStatus(null); 
         }
     };
 

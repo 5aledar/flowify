@@ -20,7 +20,9 @@ export async function GET(req: NextRequest) {
       },
       include: {
         project: true, 
+        
       },
+      
     });
 
     return new NextResponse(

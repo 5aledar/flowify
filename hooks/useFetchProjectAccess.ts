@@ -1,22 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const fetchProjectAccess = async (id: string) => {
+const fetchProjectAccess = async (email: string) => {
     try {
-        const { data } = await axios.get(`/api/projectaccess/${id}`)
+        const { data } = await axios.get(`/api/projectaccess?email=${email}`)
         return data
     } catch (error) {
         console.log(error);
     }
 }
 
-export const useFetchProjectAccess = (id: string) => {
+export const useFetchProjectAccess = (email: string) => {
     const { data, error, isLoading } = useQuery({
-        queryKey: ['access', id],
-        queryFn: () => fetchProjectAccess(id)
+        queryKey: ['access', email],
+        queryFn: () => fetchProjectAccess(email)
     })
 
     return {
-        data, error, isLoading
+        projectAccesses: data?.projectAccesses, error, loading: isLoading
     }
 }

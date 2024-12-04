@@ -6,6 +6,7 @@ import ProjectSceleteon from "./ProjectSceleteon";
 import { Suspense, useEffect } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import Pagenation from "./Pagenation";
+import { useFetchProjectAccess } from "@/hooks/useFetchProjectAccess";
 export default function UserProjects({ email }: { email: string }) {
     const {
         projects,
@@ -16,6 +17,9 @@ export default function UserProjects({ email }: { email: string }) {
         prevPage,
         currentPage,
     } = useFetchProjects(email);
+    const { projectAccesses, error, loading } = useFetchProjectAccess(email)
+    console.log(projectAccesses);
+
     if (isError) {
         toast.error('error fetching projects')
     }
@@ -36,7 +40,18 @@ export default function UserProjects({ email }: { email: string }) {
                             <p>No projects found.</p>
                         )}
                 </div>
-                <Pagenation currentPage={currentPage} meta={meta} isLoading={isLoading} prevPage={prevPage} nextPage={nextPage} />
+
+                <div className="flex flex-col justify-between h-[100%]">
+                    <div className="h-[50vh]">
+                        <h2>Team projects</h2>
+                        {projectAccesses && projectAccesses?.map((project: any) => {
+                            return (
+                                <ProjectCard key={project.project.id} project={project.project} email={project.userEmail} />
+                            )
+                        })
+                        }
+                    </div>
+                </div>
             </section>
         </Suspense>
     );

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 import axios from 'axios'
 
-const ProjectTitle = ({ title, projectId }: { title: string, projectId: string }) => {
+const ProjectTitle = ({ title, projectId , permission}: { title: string, projectId: string , permission?: string }) => {
     
     const [editing, setEditing] = useState(false)
     const [loading, setLoading] = useState(false)
