@@ -3,11 +3,10 @@ import { useFetchProjects } from "@/hooks/useFetchProjects";
 import ProjectCard from "./ProjectCard";
 import toast from "react-hot-toast";
 import ProjectSceleteon from "./ProjectSceleteon";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import Pagenation from "./Pagenation";
-
-export default function UserProjects({ googleId }: { googleId: string }) {
+export default function UserProjects({ email }: { email: string }) {
     const {
         projects,
         meta,
@@ -16,7 +15,7 @@ export default function UserProjects({ googleId }: { googleId: string }) {
         nextPage,
         prevPage,
         currentPage,
-    } = useFetchProjects(googleId);
+    } = useFetchProjects(email);
     if (isError) {
         toast.error('error fetching projects')
     }
@@ -30,7 +29,7 @@ export default function UserProjects({ googleId }: { googleId: string }) {
                         projects?.length > 0 ? (
                             <div>
                                 {projects?.map((project: any) => (
-                                    <ProjectCard project={project} googleId={googleId} key={project.id} />
+                                    <ProjectCard project={project} email={email} key={project.id} />
                                 ))}
                             </div>
                         ) : (

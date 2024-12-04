@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
 export async function POST(req: NextRequest) {
     try {
-        const { projectId, userEmail, permissions } = await req.json();
+        const { projectId, senderEmail, userEmail, permissions } = await req.json();
         const id = Number(projectId)
-        console.log({ id, userEmail, permissions });
+        console.log({
+            projectId: id,
+            userEmail,
+            senderEmail,
+            permissions,
+            status: "PENDING",
+        });
 
         // Validate input
         if (!id || !userEmail || !permissions) {
@@ -24,7 +29,6 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        // Check if the user exists
         const user = await prisma.user.findUnique({ where: { email: userEmail } });
         if (!user) {
             return new NextResponse(
@@ -32,6 +36,7 @@ export async function POST(req: NextRequest) {
                 { status: 404 }
             );
         }
+
 
         // Check if an invitation already exists for this project and user
         const existingInvitation = await prisma.invitation.findFirst({
@@ -52,8 +57,9 @@ export async function POST(req: NextRequest) {
         const invitation = await prisma.invitation.create({
             data: {
                 projectId: id,
-                userEmail,
-                permissions,
+                userEmail: userEmail,
+                senderEmail: senderEmail,
+                permissions: permissions,
                 status: "PENDING",
             },
         });
@@ -72,13 +78,11 @@ export async function POST(req: NextRequest) {
 }
 
 
-
 export async function GET(req: NextRequest) {
     try {
         // Get email from query parameter
         const url = new URL(req.url);
         const email = url.searchParams.get('email');
-        console.log(email);
 
         // Validate if email is provided
         if (!email) {

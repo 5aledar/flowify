@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from './ui/button';
 import Link from 'next/link';
 import DeleteProject from './DeleteProject';
-const ProjectCard = ({ project, googleId }: any) => {
+const ProjectCard = ({ project, email }: any) => {
   
     return (
         <div className='porject-card'>
@@ -13,7 +13,7 @@ const ProjectCard = ({ project, googleId }: any) => {
                         View
                     </Button>
                 </Link>
-                <DeleteProject id={project.id} googleId={googleId} />
+                <DeleteProject id={project.id} email={email} />
             </div>
         </div>
     )

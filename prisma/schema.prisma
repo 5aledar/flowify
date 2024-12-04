@@ -8,23 +8,26 @@ datasource db {
 }
 
 model User {
-  id              Int             @id @default(autoincrement())
-  username        String
-  email           String          @unique
-  googleId        String          @unique
-  projects        Project[]       @relation("UserOwnedProjects")
-  invitations     Invitation[]    @relation("UserInvitations")
-  projectAccesses ProjectAccess[]
+  id                Int             @id @default(autoincrement())
+  username          String
+  email             String          @unique
+  projects          Project[]       @relation("UserOwnedProjects")
+  invitations       Invitation[]    @relation("UserInvitations")
+  sendedInvitations Invitation[]    @relation("UserOwnInvitations")
+  projectAccesses   ProjectAccess[]
+  createdAt         DateTime        @default(now())
 }
 
 model Project {
   id              Int             @id @default(autoincrement())
   name            String
-  ownerId         String // Renamed from googleId
-  owner           User            @relation("UserOwnedProjects", fields: [ownerId], references: [googleId], onDelete: Cascade)
+  ownerEmail      String
+  owner           User            @relation("UserOwnedProjects", fields: [ownerEmail], references: [email], onDelete: Cascade)
   tasks           Task[]
   invitations     Invitation[]    @relation("ProjectInvitations")
   projectAccesses ProjectAccess[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now()) @updatedAt
 }
 
 model Task {
@@ -45,6 +48,8 @@ model Invitation {
   project     Project          @relation("ProjectInvitations", fields: [projectId], references: [id], onDelete: Cascade)
   userEmail   String
   user        User             @relation("UserInvitations", fields: [userEmail], references: [email], onDelete: Cascade)
+  senderEmail String
+  sender      User             @relation("UserOwnInvitations", fields: [senderEmail], references: [email], onDelete: Cascade) // renamed from 'user' to 'sender'
   permissions Permission
   status      InvitationStatus
   createdAt   DateTime         @default(now())
@@ -54,8 +59,8 @@ model ProjectAccess {
   id          Int        @id @default(autoincrement())
   projectId   Int
   project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  userId      String
-  user        User       @relation(fields: [userId], references: [googleId], onDelete: Cascade)
+  userEmail   String
+  user        User       @relation(fields: [userEmail], references: [email], onDelete: Cascade)
   permissions Permission
   createdAt   DateTime   @default(now())
 }

@@ -23,7 +23,6 @@ const fetchTasks = async (
   filter: string
 ): Promise<FetchTasksResponse> => {
 
-  console.log(date);
 
   const { data }: { data: FetchTasksResponse } = await axios.get(
     `/api/projects/${projectId}/tasks?page=${page}&sort=${date}&filter=${filter}`

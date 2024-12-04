@@ -12,17 +12,17 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
 
-export default function CreateProjectButton({ googleId }: { googleId: string }) {
+export default function CreateProjectButton({ email }: { email: string }) {
   const [projectName, setProjectName] = useState("");
   const [popoverOpen, setPopoverOpen] = useState(false); 
-  const createProjectMutation = useCreateProject(googleId);
+  const createProjectMutation = useCreateProject(email);
 
   const handleCreateProject = () => {
     if (!projectName) {
       toast.error('Project name is required!');
       return;
     }
-    createProjectMutation.mutate({ name: projectName, googleId }, {
+    createProjectMutation.mutate({ name: projectName, email }, {
       onSuccess: () => {
         setProjectName('');
         setPopoverOpen(false); 

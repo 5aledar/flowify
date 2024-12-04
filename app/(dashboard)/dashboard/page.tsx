@@ -10,9 +10,9 @@ const Dashboard = async () => {
     <main className='px-16 pt-4 h-[82vh]'>
       <header className='flex justify-between mt-[50px]'>
         <b className='text-2xl'>Welcom {clerkUser?.firstName}</b>
-        <CreateProject googleId={clerkUser?.id!} />
+        <CreateProject email={clerkUser?.emailAddresses[0].emailAddress!} />
       </header>
-      <UserProjects googleId={clerkUser?.id!} />
+      <UserProjects email={clerkUser?.emailAddresses[0].emailAddress!} />
     </main>
   )
 }

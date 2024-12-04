@@ -5,6 +5,8 @@ import axios from "axios"
 const fetchInvites = async (userEmail: string) => {
     try {
         const { data } = await axios.get(`/api/invitations?email=${userEmail}`)
+        console.log(data);
+        
         return data
     } catch (error) {
         console.log(error);

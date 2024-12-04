@@ -16,9 +16,9 @@ const Notifications = ({ userEmail }: { userEmail: string }) => {
             <PopoverTrigger>
                 <IoIosNotifications />
             </PopoverTrigger>
-            <PopoverContent>
-                {data?.invitations.map((invite: any) => (
-                    <Invitation key={invite.id} id={invite.id} projectId={invite.projectId} permissions={invite.permissions} />
+            <PopoverContent className='h-[300px]'>
+                {data?.invitations?.map((invite: any) => (
+                    <Invitation key={invite.id} invite={invite} />
                 ))
                 }
             </PopoverContent>

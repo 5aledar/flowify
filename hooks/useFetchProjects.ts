@@ -20,19 +20,19 @@ interface FetchProjectsResponse {
   meta: PaginationMeta;
 }
 
-const fetchProjects = async (googleId: string, page: number) => {
+const fetchProjects = async (email: string, page: number) => {
+
   const { data } = await axios.get<FetchProjectsResponse>(
-    `/api/projects/create/${googleId}?page=${page}`
+    `/api/projects?page=${page}&email=${email}`
   );
   return data;
 };
 
-export const useFetchProjects = (googleId: string) => {
+export const useFetchProjects = (email: string) => {
   const [currentPage, setCurrentPage] = useState(1);
-
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["projects", googleId, currentPage],
-    queryFn: () => fetchProjects(googleId, currentPage),
+    queryKey: ["projects", email, currentPage],
+    queryFn: () => fetchProjects(email, currentPage),
   }
 
   );

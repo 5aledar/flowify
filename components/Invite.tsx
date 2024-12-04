@@ -20,41 +20,43 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { FormEvent, useState } from "react"
 import { useSendInvite } from "@/hooks/useSendInvite"
-import toast from "react-hot-toast"
+import { useUser } from "@clerk/nextjs"
 enum Permissions {
     READ = 'READ',
     READ_WRITE = 'READ_WRITE'
 }
 const Invite = ({ projectId }: { projectId: string }) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [email, setEmail] = useState('')
+    const [userEmail, setUserEmail] = useState('')
     const [permission, setPermission] = useState<'READ' | 'READ_WRITE'>('READ')
     const [loading, setLoading] = useState(false)
     const { mutate, error } = useSendInvite();
     const handleStatusChange = (newStatus: 'READ' | 'READ_WRITE') => {
         setPermission(newStatus);
     };
+
+    const { user } = useUser()
+
     const handleSendInvite = async (e: FormEvent) => {
+
         e.preventDefault();
         setIsOpen(false);
         try {
             setLoading(true);
-            await mutate({ email, projectId, permission });
+            await mutate({ senderEmail: user?.emailAddresses[0].emailAddress!, userEmail, projectId, permission });
             setLoading(false);
-
         } catch (error) {
             setLoading(false);
             console.error("Failed to send invite:", error);
         }
     };
     return (
-        <Dialog open={isOpen}>
-            <DialogTrigger asChild onClick={() => setIsOpen(prev => !prev)}>
+        <Dialog >
+            <DialogTrigger asChild >
                 <Button variant="outline">Invite</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSendInvite}>
-
                     <DialogHeader>
                         <DialogTitle>Invite other user</DialogTitle>
                         <DialogDescription>
@@ -66,7 +68,7 @@ const Invite = ({ projectId }: { projectId: string }) => {
                             <Label htmlFor="name" className="text-right" >
                                 Email
                             </Label>
-                            <Input id="name" value={email} type="email" className="col-span-3" onChange={(e) => setEmail(e.target.value)} />
+                            <Input id="name" value={userEmail} type="email" className="col-span-3" onChange={(e) => setUserEmail(e.target.value)} />
                             <Label className="text-right" >
                                 permissions
                             </Label>

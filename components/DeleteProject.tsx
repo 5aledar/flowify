@@ -13,11 +13,11 @@ import { useDeleteProject } from '@/hooks/useDeleteProject';
 
 import { Button } from "@/components/ui/button"
 import { MdDelete } from "react-icons/md";
-const DeleteProject = ({ googleId, id }: any) => {
+const DeleteProject = ({ email, id }: any) => {
 
-    const deleteProjectMutation = useDeleteProject(googleId);
+    const deleteProjectMutation = useDeleteProject(email);
     const handleDelete = (id: number) => {
-        deleteProjectMutation.mutate({ googleId, id });
+        deleteProjectMutation.mutate({ email, id });
     };
 
     return (

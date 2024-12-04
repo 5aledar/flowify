@@ -8,8 +8,9 @@ import TitleSkeleton from '@/components/TitleSkeleton'
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Invite from '@/components/Invite'
-const Project = () => {
-  const { projectId }: { projectId: string } = useParams()
+
+const Project =  () => {
+  const { projectId  }: { projectId: string } = useParams()
   const id = parseInt(projectId)
   const { data, isLoading } = useFetchProject(id)
 

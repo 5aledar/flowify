@@ -14,11 +14,11 @@ export async function DELETE(
 
   try {
     const url = new URL(req.url);
-    const googleId = url.searchParams.get("googleId");
+    const email = url.searchParams.get("email");
 
-    if (!id || !googleId) {
+    if (!id || !email) {
       return NextResponse.json(
-        { error: "Missing parameters (id or googleId)" },
+        { error: "Missing parameters (id or email)" },
         { status: 400 }
       );
     }
@@ -34,7 +34,7 @@ export async function DELETE(
     const deletedProject = await prisma.project.delete({
       where: {
         id: projectId,
-        googleId: googleId,
+        ownerEmail: email,
       },
     });
 
@@ -109,7 +109,7 @@ export async function PUT(
   req: Request,
   { params }: { params: any }
 ) {
-  const { id } = params;
+  const id = await params.id;
 
   try {
     const { name } = await req.json();
