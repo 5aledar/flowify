@@ -4,25 +4,25 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 import CreateTask from './CreateTask';
 import TableSkeleton from './TableSkeleton';
 import Pagenation from './Pagenation';
-import { useFilterStore } from '@/stores/useFilterStore';
 import Filters from './Filters';
 import TaskItem from './Task';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Task } from '@prisma/client';
+import { useFetchPermission } from '@/hooks/useFetchPermision';
+import { useUser } from '@clerk/nextjs';
 
 const TaskContainer = ({ id }: { id: string }) => {
-  const { status } = useFilterStore();
   const { tasks, meta, nextPage, prevPage, currentPage, isLoading } = useFetchTasks(id);
   const [tickets, setTickets] = useState<Task[]>(tasks! || []);
-
+  const { user } = useUser()
+  const { permisson, error } = useFetchPermission(id, user?.emailAddresses[0].emailAddress!)
   useEffect(() => {
     setTickets(tasks!);
   }, [tasks, isLoading]);
-
   const updateTaskOrder = async (projectId: string, reorderedTasks: { id: number; order: number }[]) => {
     try {
-      await axios.patch(`/api/projects/${projectId}/tasks`, { reorderedTasks });
+      await axios.patch(`/api/projects/${projectId}/tasks?email=${user?.emailAddresses[0].emailAddress!}`, { reorderedTasks });
     } catch (error) {
       console.error('Failed to update task order:', error);
     }
@@ -51,7 +51,7 @@ const TaskContainer = ({ id }: { id: string }) => {
     <div className="w-full h-full flex flex-col gap-6 ">
       <header className='mb-4 flex justify-between items-center'>
         <Filters />
-        <CreateTask projectId={id} />
+        <CreateTask projectId={id} permission={permisson} />
       </header>
       <section className='h-[50vh] mb-[60px]'>
         <Table className='w-full' >
@@ -76,6 +76,7 @@ const TaskContainer = ({ id }: { id: string }) => {
                       projectId={id}
                       index={index}
                       moveTask={moveTask}
+                      permission={permisson}
                     />
                   ))
                 }

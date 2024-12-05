@@ -23,11 +23,11 @@ const Project = () => {
 
 
   return (
-    <main className='flex flex-col items-center px-12'>
+    <main className='flex flex-col items-center px-8 sm:px-12'>
       <header className='flex w-full justify-between my-[25px] items-center pt-8'>
         {isLoading && <TitleSkeleton />}
         {data?.name && <ProjectTitle title={data?.name} projectId={projectId} permission={permisson} />}
-        <Invite projectId={projectId} />
+        <Invite projectId={projectId} access={permisson}/>
       </header>
       <DndProvider backend={HTML5Backend}>
         <TaskContainer id={projectId} />

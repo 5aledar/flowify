@@ -130,9 +130,8 @@ export async function GET(
 }
 
 
-export async function PATCH(req: NextRequest, { params }: { params: any }) {
+export async function PATCH(req: NextRequest) {
   try {
-    const { id } = params;
     const body = await req.json();
 
     // Expecting an array of tasks with their new order

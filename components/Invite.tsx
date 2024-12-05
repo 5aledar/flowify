@@ -25,7 +25,7 @@ enum Permissions {
     READ = 'READ',
     READ_WRITE = 'READ_WRITE'
 }
-const Invite = ({ projectId }: { projectId: string }) => {
+const Invite = ({ projectId  , access}: { projectId: string , access: any}) => {
     const [isOpen, setIsOpen] = useState(false)
     const [userEmail, setUserEmail] = useState('')
     const [permission, setPermission] = useState<'READ' | 'READ_WRITE'>('READ')
@@ -51,9 +51,10 @@ const Invite = ({ projectId }: { projectId: string }) => {
             setLoading(false);
         }
     };
+    
     return (
         <Dialog >
-            <DialogTrigger asChild >
+            <DialogTrigger asChild disabled={ access?.permissions == 'READ'}>
                 <Button variant="outline">Invite</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

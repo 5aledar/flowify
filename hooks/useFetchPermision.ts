@@ -5,7 +5,6 @@ const fetchPermission = async (projectId: string, email: string) => {
     try {
         
         const { data } = await axios.get(`/api/projectaccess/permission?projectId=${projectId}&email=${email}`)
-       console.log(data);
         return data
     } catch (error) {
         console.log(error);

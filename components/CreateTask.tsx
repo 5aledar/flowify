@@ -30,7 +30,7 @@ enum TaskStatus {
     COMPLETED = "COMPLETED",
 }
 
-const CreateTask = ({ projectId }: { projectId: string }) => {
+const CreateTask = ({ projectId, permission }: { projectId: string, permission: any }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState<TaskStatus>(TaskStatus.TO_DO);
@@ -49,7 +49,6 @@ const CreateTask = ({ projectId }: { projectId: string }) => {
                 return toast.error("All fields are required");
             }
             setLoading(true)
-
             mutate(
                 {
                     projectId,
@@ -66,14 +65,13 @@ const CreateTask = ({ projectId }: { projectId: string }) => {
             );
         } catch (error) {
             console.log(error);
-
         }
     };
 
 
     return (
         <Dialog>
-            <DialogTrigger asChild>
+            <DialogTrigger asChild disabled={permission?.permissions == 'READ'}>
                 <Button variant="outline" className='text-md'>+</Button>
             </DialogTrigger>
             <DialogContent
@@ -134,7 +132,7 @@ const CreateTask = ({ projectId }: { projectId: string }) => {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit" onClick={handleSubmit} disabled={loading}>{!loading ?'Add': 'creating...'}</Button>
+                    <Button type="submit" onClick={handleSubmit} disabled={loading}>{!loading ? 'Add' : 'creating...'}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

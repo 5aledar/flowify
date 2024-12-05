@@ -17,9 +17,10 @@ interface TaskItemProps {
     projectId: string;
     index: number;
     moveTask: (fromIndex: number, toIndex: number) => void;
+    permission: any;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ task, projectId, index, moveTask }) => {
+const TaskItem: React.FC<TaskItemProps> = ({ task, projectId, index, moveTask, permission }) => {
 
     const [currentStatus, setCurrentStatus] = useState(task.status);
     const { mutate: updateStatus } = useUpdateTaskStatus();
@@ -57,7 +58,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, projectId, index, moveTask })
             <TableCell className="font-semibold text-[12px]">{task.title}</TableCell>
             <TableCell>
                 <Select value={currentStatus} onValueChange={handleStatusChange}>
-                    <SelectTrigger className="w-[150px] h-[30px] shadow-none text-[12px] border-none">
+                    <SelectTrigger className="w-[150px] h-[30px] shadow-none text-[12px] border-none" disabled={permission?.permissions == 'READ'}>
                         <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent className='items-start'>
@@ -68,7 +69,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, projectId, index, moveTask })
                 </Select>
             </TableCell>
             <TableCell>{task.description}</TableCell>
-            <TableCell className="flex h-12 justify-end items-center"><DeleteTask taskId={task.id} projectId={projectId} /></TableCell>
+            <TableCell className="flex h-12 justify-end items-center" >{permission?.permissions == 'READ' ? (<></>) : (<DeleteTask taskId={task.id} projectId={projectId} />)}</TableCell>
         </TableRow>
     )
 }

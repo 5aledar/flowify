@@ -6,10 +6,8 @@ import { prisma } from "@/lib/prisma";
 
 
 // DELETE handler
-export async function DELETE(
-  req: Request,
-  { params }: { params: any }
-) {
+
+export async function DELETE(req: NextRequest, { params }: { params: any }) {
   const { id } = params;
 
   try {
@@ -31,10 +29,31 @@ export async function DELETE(
       );
     }
 
+    // Fetch the project to check ownership
+    const project = await prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+    });
+
+    if (!project) {
+      return NextResponse.json(
+        { error: "Project not found" },
+        { status: 404 }
+      );
+    }
+
+    if (project.ownerEmail !== email) {
+      return NextResponse.json(
+        { error: "Unauthorized: You do not own this project" },
+        { status: 403 }
+      );
+    }
+
+    // Delete the project if the user owns it
     const deletedProject = await prisma.project.delete({
       where: {
         id: projectId,
-        ownerEmail: email,
       },
     });
 
@@ -50,6 +69,7 @@ export async function DELETE(
     );
   }
 }
+
 
 
 
@@ -105,18 +125,18 @@ export async function GET(
 
 
 // PUT handler
-export async function PUT(
-  req: Request,
-  { params }: { params: any }
-) {
+
+export async function PUT(req: NextRequest, { params }: { params: any }) {
   const id = await params.id;
 
   try {
+    const url = new URL(req.url);
+    const email = url.searchParams.get("email");
     const { name } = await req.json();
 
-    if (!id || !name) {
+    if (!id || !name || !email) {
       return NextResponse.json(
-        { success: false, error: "Project title and ID are required" },
+        { success: false, error: "Project title, ID, and email are required" },
         { status: 400 }
       );
     }
@@ -129,6 +149,39 @@ export async function PUT(
       );
     }
 
+    // Fetch the project to check ownership
+    const project = await prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+    });
+
+    if (!project) {
+      return NextResponse.json(
+        { error: "Project not found" },
+        { status: 404 }
+      );
+    }
+
+    if (project.ownerEmail !== email) {
+      // If not the owner, check for READ_WRITE permissions
+      const projectAccess = await prisma.projectAccess.findFirst({
+        where: {
+          projectId: projectId,
+          userEmail: email,
+          permissions: 'READ_WRITE',
+        },
+      });
+
+      if (!projectAccess) {
+        return NextResponse.json(
+          { error: "Unauthorized: You do not have permission to update this project" },
+          { status: 403 }
+        );
+      }
+    }
+
+    // Update the project title if the user owns it or has READ_WRITE permissions
     const updatedProject = await prisma.project.update({
       where: {
         id: projectId,
@@ -147,7 +200,6 @@ export async function PUT(
     );
   }
 }
-
 
 
 
