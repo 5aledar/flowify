@@ -5,7 +5,6 @@ import React from 'react'
 import { ModeToggle } from './ModeButton'
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
-import Notifications from './Notifications'
 const Navbar = async () => {
   return (
     <nav className='flex justify-between fixed w-full bg-white dark:bg-[#09090B] items-center md:h-[45px] h-[40px]  md:px-12 px-6 z-50'>
