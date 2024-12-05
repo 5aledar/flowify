@@ -21,6 +21,8 @@ import { Label } from "@/components/ui/label"
 import { FormEvent, useState } from "react"
 import { useSendInvite } from "@/hooks/useSendInvite"
 import { useUser } from "@clerk/nextjs"
+import { validateEmail } from "@/lib/utils/validateEmail"
+import toast from "react-hot-toast"
 enum Permissions {
     READ = 'READ',
     READ_WRITE = 'READ_WRITE'
@@ -40,6 +42,12 @@ const Invite = ({ projectId  , access}: { projectId: string , access: any}) => {
     const handleSendInvite = async (e: FormEvent) => {
 
         e.preventDefault();
+        const isValid = validateEmail(userEmail)
+        console.log(isValid);
+        if (!isValid) {
+            toast.error('enter a valid email')
+            return
+        }
         setIsOpen(false);
         try {
             setLoading(true);
@@ -70,7 +78,7 @@ const Invite = ({ projectId  , access}: { projectId: string , access: any}) => {
                             <Label htmlFor="name" className="text-right" >
                                 Email
                             </Label>
-                            <Input id="name" value={userEmail} type="email" className="col-span-3" onChange={(e) => setUserEmail(e.target.value)} />
+                            <Input id="name" value={userEmail} className="col-span-3" onChange={(e) => setUserEmail(e.target.value)} />
                             <Label className="text-right" >
                                 permissions
                             </Label>

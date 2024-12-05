@@ -1,30 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
+const updateProjectTitle = async ({ projectId, email, name }: { projectId: string, email: string, name: string }) => {
+    const response = await axios.put(`/api/projects/${projectId}?email=${email}`, { name });
+    return response.data;
+};
 
-const updateProject = async (id: string, title: string , email:string) => {
-    try {
+export const useUpdateProjectTitle = () => {
+    const queryClient = useQueryClient();
 
-        const { data } = await axios.put(`/api/projects/${id}?email=${email}`, {
-            data: {
-                title,
-            }
-        })
-        return data
-    } catch (error) {
-        console.log(error);
-
-    }
-}
-
-
-export const useUpdateProject = (id: string, title: string , email: string) => {
-    const { data, error, isLoading } = useQuery({
-        queryKey: ['projectTitle', id, title],
-        queryFn: () => updateProject(id, title , email)
-    })
-
-    return {
-        data
-    }
-}
+    return useMutation({
+        mutationFn: updateProjectTitle,
+        onSuccess: (data) => {
+            toast.success('title updated')
+        },
+        onError: (error) => {
+            console.error("Error updating project title:", error);
+        }
+    });
+};

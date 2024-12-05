@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { validateEmail } from "@/lib/utils/validateEmail";
 export async function POST(req: NextRequest) {
     try {
         const { projectId, senderEmail, userEmail, permissions } = await req.json();
@@ -19,7 +20,13 @@ export async function POST(req: NextRequest) {
                 { status: 400 }
             );
         }
-
+        const isValid = validateEmail(userEmail)
+        if (!isValid) {
+            return new NextResponse(
+                JSON.stringify({ success: false, error: "email is not valid" }),
+                { status: 400 }
+            );
+        }
         // Ensure the project exists
         const project = await prisma.project.findUnique({ where: { id: id } });
         if (!project) {

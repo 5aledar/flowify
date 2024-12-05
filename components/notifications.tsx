@@ -8,16 +8,17 @@ import {
 import { IoIosNotifications } from "react-icons/io";
 import Invitation from './Invitation';
 import { useFetchInvites } from '@/hooks/useFetchInvites';
-const Notifications = ({ userEmail }: { userEmail: string }) => {
-    const { data, error, isLoading } = useFetchInvites(userEmail)
-
+import { useUser } from '@clerk/nextjs';
+const Notifications = () => {
+    const {user} = useUser()
+    const { data, error, isLoading } = useFetchInvites(user?.emailAddresses[0].emailAddress!)
     return (
         <Popover>
             <PopoverTrigger>
                 <IoIosNotifications />
             </PopoverTrigger>
             <PopoverContent className='h-[300px]'>
-                {data?.invitations?.map((invite: any) => (
+                {isLoading? (<p>loading ...</p>)  : data?.invitations?.map((invite: any) => (
                     <Invitation key={invite.id} invite={invite} />
                 ))
                 }

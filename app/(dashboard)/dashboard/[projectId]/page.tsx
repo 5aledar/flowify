@@ -9,7 +9,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Invite from '@/components/Invite'
 import { useUser } from '@clerk/nextjs'
-import { useFetchProjectAccess } from '@/hooks/useFetchProjectAccess'
 import { useFetchPermission } from '@/hooks/useFetchPermision'
 const Project = () => {
   const { projectId }: { projectId: string } = useParams()
@@ -17,8 +16,7 @@ const Project = () => {
   const { data, isLoading } = useFetchProject(id)
   const { user } = useUser()
   const userEmail = user?.emailAddresses[0].emailAddress
-  const owner = data?.ownerEmail == userEmail
-    const { permisson, error } = useFetchPermission(projectId, userEmail!)
+  const { permisson } = useFetchPermission(projectId, userEmail!)
 
 
 
@@ -27,7 +25,7 @@ const Project = () => {
       <header className='flex w-full justify-between my-[25px] items-center pt-8'>
         {isLoading && <TitleSkeleton />}
         {data?.name && <ProjectTitle title={data?.name} projectId={projectId} permission={permisson} />}
-        <Invite projectId={projectId} access={permisson}/>
+        <Invite projectId={projectId} access={permisson} />
       </header>
       <DndProvider backend={HTML5Backend}>
         <TaskContainer id={projectId} />

@@ -3,43 +3,49 @@
 import { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
-import axios from 'axios'
 import { useUser } from '@clerk/nextjs'
+import { useUpdateProjectTitle } from '@/hooks/useUpdateProject'
 
 const ProjectTitle = ({ title, projectId, permission }: { title: string, projectId: string, permission?: any }) => {
 
     const [editing, setEditing] = useState(false)
     const [loading, setLoading] = useState(false)
     const [documentTitle, setDocumentTitle] = useState(title)
+    const updateProjectTitleMutation = useUpdateProjectTitle();
     useEffect(() => {
         setDocumentTitle(title)
     }, [title])
-    console.log(permission);
 
     const { user } = useUser()
     const updateTitleHandler = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            if (documentTitle == '') {
-                setDocumentTitle(title)
-                setEditing(false)
-                return
-            }
             setLoading(true)
-            try {
-                if (documentTitle !== title) {
-                    const data = await axios.put(`/api/projects/${projectId}?email=${user?.emailAddresses[0].emailAddress!}`, { name: documentTitle })
-                    if (data.status === 200) {
-                        setDocumentTitle(data.data.name)
-                        setEditing(false)
-                    }
-                }
-            } catch (error) {
-                console.error("Error updating project title:", error)
-            } finally {
+          if (documentTitle === '') {
+            setDocumentTitle(title);
+            setEditing(false);
+            return;
+          }
+          if (documentTitle !== title) {
+            updateProjectTitleMutation.mutate({
+              projectId,
+              email: user?.emailAddresses[0].emailAddress!,
+              name: documentTitle,
+            }, {
+              onSuccess: (data) => {
+                setDocumentTitle(data.name);
                 setLoading(false)
-            }
+                setEditing(false);
+              },
+              onError: (error) => {
+                console.error("Error updating project title:", error);
+              }
+            });
+          } else {
+            setLoading(false)
+            setEditing(false);
+          }
         }
-    }
+      };
 
     const inputRef = useRef<HTMLInputElement>(null)
 

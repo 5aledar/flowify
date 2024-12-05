@@ -6,13 +6,11 @@ import { useUpdateInvitationStatus } from '@/hooks/useUpdateInvitation'
 const Invitation = ({ invite }: any) => {
     const { data, error, isLoading } = useFetchProject(invite.projectId)
     const { mutate } = useUpdateInvitationStatus();
-    const [status, setStatus] = useState<'ACCEPTED' | 'DECLINED' | null>(null);
     const handleAccept = async () => {
         try {
-            setStatus('ACCEPTED');
             await mutate({ id: invite.id, status: 'ACCEPTED' });
         } catch (error) {
-            setStatus(null); 
+            console.log(error);
         }
     };
 
