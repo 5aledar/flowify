@@ -7,7 +7,7 @@ async function main() {
     await prisma.$connect();
     console.log('success: db connected');
   } catch (error) {
-    console.error("Failed to connect to MySQL database:", error);
+    console.error('Failed to connect to MySQL database:', error);
   } finally {
     await prisma.$disconnect();
   }

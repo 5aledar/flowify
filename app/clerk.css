@@ -1,0 +1,5 @@
+:root {
+  --clerk-primary-color: var(--shadcn-primary-color);
+  --clerk-background-color: var(--shadcn-background-color);
+  --clerk-text-color: var(--shadcn-text-color);
+}

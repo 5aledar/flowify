@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 interface Project {
   id: number;
@@ -21,7 +21,6 @@ interface FetchProjectsResponse {
 }
 
 const fetchProjects = async (email: string, page: number) => {
-
   const { data } = await axios.get<FetchProjectsResponse>(
     `/api/projects?page=${page}&email=${email}`
   );
@@ -31,11 +30,9 @@ const fetchProjects = async (email: string, page: number) => {
 export const useFetchProjects = (email: string) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["projects", email, currentPage],
+    queryKey: ['projects', email, currentPage],
     queryFn: () => fetchProjects(email, currentPage),
-  }
-
-  );
+  });
 
   const nextPage = () => {
     if (data?.meta && currentPage < data.meta.totalPages) {

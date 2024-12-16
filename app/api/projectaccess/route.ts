@@ -19,10 +19,8 @@ export async function GET(req: NextRequest) {
         userEmail: email,
       },
       include: {
-        project: true, 
-        
+        project: true,
       },
-      
     });
 
     return new NextResponse(

@@ -1,9 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-
-
-
-
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
 
 // DELETE handler
 
@@ -12,11 +8,11 @@ export async function DELETE(req: NextRequest, { params }: { params: any }) {
 
   try {
     const url = new URL(req.url);
-    const email = url.searchParams.get("email");
+    const email = url.searchParams.get('email');
 
     if (!id || !email) {
       return NextResponse.json(
-        { error: "Missing parameters (id or email)" },
+        { error: 'Missing parameters (id or email)' },
         { status: 400 }
       );
     }
@@ -24,7 +20,7 @@ export async function DELETE(req: NextRequest, { params }: { params: any }) {
     const projectId = parseInt(id, 10);
     if (isNaN(projectId)) {
       return NextResponse.json(
-        { error: "Invalid project ID format" },
+        { error: 'Invalid project ID format' },
         { status: 400 }
       );
     }
@@ -37,15 +33,12 @@ export async function DELETE(req: NextRequest, { params }: { params: any }) {
     });
 
     if (!project) {
-      return NextResponse.json(
-        { error: "Project not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
     if (project.ownerEmail !== email) {
       return NextResponse.json(
-        { error: "Unauthorized: You do not own this project" },
+        { error: 'Unauthorized: You do not own this project' },
         { status: 403 }
       );
     }
@@ -58,32 +51,24 @@ export async function DELETE(req: NextRequest, { params }: { params: any }) {
     });
 
     return NextResponse.json(
-      { message: "Project deleted successfully", deletedProject },
+      { message: 'Project deleted successfully', deletedProject },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error deleting project:", error);
+    console.error('Error deleting project:', error);
     return NextResponse.json(
-      { error: "Failed to delete project" },
+      { error: 'Failed to delete project' },
       { status: 500 }
     );
   }
 }
 
-
-
-
-
-
-export async function GET(
-  req: Request,
-  { params }: { params: any }
-) {
+export async function GET(req: Request, { params }: { params: any }) {
   const { id } = params;
 
   if (!id) {
     return NextResponse.json(
-      { success: false, error: "Project ID is required" },
+      { success: false, error: 'Project ID is required' },
       { status: 400 }
     );
   }
@@ -91,7 +76,7 @@ export async function GET(
   const projectId = parseInt(id, 10);
   if (isNaN(projectId)) {
     return NextResponse.json(
-      { error: "Invalid project ID format" },
+      { error: 'Invalid project ID format' },
       { status: 400 }
     );
   }
@@ -104,25 +89,18 @@ export async function GET(
     });
 
     if (!project) {
-      return NextResponse.json(
-        { error: "Project not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
     return NextResponse.json(project, { status: 200 });
   } catch (error) {
-    console.error("Error fetching project:", error);
+    console.error('Error fetching project:', error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
-
-
-
-
 
 // PUT handler
 
@@ -131,12 +109,12 @@ export async function PUT(req: NextRequest, { params }: { params: any }) {
 
   try {
     const url = new URL(req.url);
-    const email = url.searchParams.get("email");
+    const email = url.searchParams.get('email');
     const { name } = await req.json();
 
     if (!id || !name || !email) {
       return NextResponse.json(
-        { success: false, error: "Project title, ID, and email are required" },
+        { success: false, error: 'Project title, ID, and email are required' },
         { status: 400 }
       );
     }
@@ -144,7 +122,7 @@ export async function PUT(req: NextRequest, { params }: { params: any }) {
     const projectId = parseInt(id, 10);
     if (isNaN(projectId)) {
       return NextResponse.json(
-        { error: "Invalid project ID format" },
+        { error: 'Invalid project ID format' },
         { status: 400 }
       );
     }
@@ -157,10 +135,7 @@ export async function PUT(req: NextRequest, { params }: { params: any }) {
     });
 
     if (!project) {
-      return NextResponse.json(
-        { error: "Project not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
     if (project.ownerEmail !== email) {
@@ -175,7 +150,10 @@ export async function PUT(req: NextRequest, { params }: { params: any }) {
 
       if (!projectAccess) {
         return NextResponse.json(
-          { error: "Unauthorized: You do not have permission to update this project" },
+          {
+            error:
+              'Unauthorized: You do not have permission to update this project',
+          },
           { status: 403 }
         );
       }
@@ -193,14 +171,10 @@ export async function PUT(req: NextRequest, { params }: { params: any }) {
 
     return NextResponse.json(updatedProject, { status: 200 });
   } catch (error) {
-    console.error("Error updating project:", error);
+    console.error('Error updating project:', error);
     return NextResponse.json(
-      { error: "Failed to update project title" },
+      { error: 'Failed to update project title' },
       { status: 500 }
     );
   }
 }
-
-
-
-

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useFilterStore } from "@/stores/useFilterStore";
-import { Task } from "@prisma/client";
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useFilterStore } from '@/stores/useFilterStore';
+import { Task } from '@prisma/client';
 
 interface PaginationMeta {
   currentPage: number;
@@ -22,8 +22,6 @@ const fetchTasks = async (
   date: string,
   filter: string
 ): Promise<FetchTasksResponse> => {
-
-
   const { data }: { data: FetchTasksResponse } = await axios.get(
     `/api/projects/${projectId}/tasks?page=${page}&sort=${date}&filter=${filter}`
   );
@@ -31,11 +29,11 @@ const fetchTasks = async (
 };
 
 export const useFetchTasks = (projectId: string) => {
-  const { date, status } = useFilterStore()
+  const { date, status } = useFilterStore();
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["tasks", projectId, currentPage, date, status],
+    queryKey: ['tasks', projectId, currentPage, date, status],
     queryFn: () => fetchTasks(projectId, currentPage, date, status),
   });
 
@@ -51,8 +49,6 @@ export const useFetchTasks = (projectId: string) => {
     }
   };
 
-
-
   return {
     tasks: data?.tasks!,
     meta: data?.pagination,
@@ -63,6 +59,5 @@ export const useFetchTasks = (projectId: string) => {
     nextPage,
     prevPage,
     date,
-
   };
 };

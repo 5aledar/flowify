@@ -1,17 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: "Project",
-    description: "user project",
+  title: 'Project',
+  description: 'user project',
 };
 export default function IndexLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <div>
-            {children}
-        </div>
-    );
+  return <div>{children}</div>;
 }

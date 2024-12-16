@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Sign up",
-  description: "sign up with google",
+  title: 'Sign up',
+  description: 'sign up with google',
 };
 
 export default function IndexLayout({
@@ -10,9 +10,5 @@ export default function IndexLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div>
-      {children}
-    </div>
-  );
+  return <div>{children}</div>;
 }

@@ -78,19 +78,19 @@ body {
   }
 
   .project-title {
-    @apply line-clamp-1 text-sm font-semibold leading-[24px] sm:pl-0 sm:text-xl 
+    @apply line-clamp-1 text-sm font-semibold leading-[24px] sm:pl-0 sm:text-xl;
   }
 
   .porject-card {
-    @apply w-full shadow-sm hover:bg-slate-100  duration-300 dark:hover:bg-[#171717] my-2 rounded-lg h-12 flex justify-between items-center px-3
+    @apply w-full shadow-sm hover:bg-slate-100  duration-300 dark:hover:bg-[#171717] my-2 rounded-lg h-12 flex justify-between items-center px-3;
   }
   .loading-spinner {
-    @apply w-10 h-10  border-solid rounded-full animate-spin bg-gradient-to-r from-pink-500 to-purple-600
+    @apply w-10 h-10  border-solid rounded-full animate-spin bg-gradient-to-r from-pink-500 to-purple-600;
   }
-  .bg-header{
-    @apply  h-fit flex m-auto flex-col  md:max-w-[45%] gap-5 justify-center md:p-16 p-8 items-start opacity-90 rounded-2xl bg-gradient-to-t  from-pink-500 to-purple-600
+  .bg-header {
+    @apply h-fit flex m-auto flex-col  md:max-w-[45%] gap-5 justify-center md:p-16 p-8 items-start opacity-90 rounded-2xl bg-gradient-to-t  from-pink-500 to-purple-600;
   }
-  .main-home{
-    @apply p-12 w-full h-[100vh]  flex justify-center items-center bg-cover
+  .main-home {
+    @apply p-12 w-full h-[100vh]  flex justify-center items-center bg-cover;
   }
 }

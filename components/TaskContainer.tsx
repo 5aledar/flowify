@@ -1,6 +1,12 @@
-'use client'
+'use client';
 import { useFetchTasks } from '@/hooks/useFetchTasks';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import CreateTask from './CreateTask';
 import TableSkeleton from './TableSkeleton';
 import Pagenation from './Pagenation';
@@ -13,16 +19,26 @@ import { useFetchPermission } from '@/hooks/useFetchPermision';
 import { useUser } from '@clerk/nextjs';
 
 const TaskContainer = ({ id }: { id: string }) => {
-  const { tasks, meta, nextPage, prevPage, currentPage, isLoading } = useFetchTasks(id);
+  const { tasks, meta, nextPage, prevPage, currentPage, isLoading } =
+    useFetchTasks(id);
   const [tickets, setTickets] = useState<Task[]>(tasks! || []);
-  const { user } = useUser()
-  const { permisson, error } = useFetchPermission(id, user?.emailAddresses[0].emailAddress!)
+  const { user } = useUser();
+  const { permisson, error } = useFetchPermission(
+    id,
+    user?.emailAddresses[0].emailAddress!
+  );
   useEffect(() => {
     setTickets(tasks!);
   }, [tasks, isLoading]);
-  const updateTaskOrder = async (projectId: string, reorderedTasks: { id: number; order: number }[]) => {
+  const updateTaskOrder = async (
+    projectId: string,
+    reorderedTasks: { id: number; order: number }[]
+  ) => {
     try {
-      await axios.patch(`/api/projects/${projectId}/tasks?email=${user?.emailAddresses[0].emailAddress!}`, { reorderedTasks });
+      await axios.patch(
+        `/api/projects/${projectId}/tasks?email=${user?.emailAddresses[0].emailAddress!}`,
+        { reorderedTasks }
+      );
     } catch (error) {
       console.error('Failed to update task order:', error);
     }
@@ -49,44 +65,48 @@ const TaskContainer = ({ id }: { id: string }) => {
   };
   return (
     <div className="w-full h-full flex flex-col gap-6 ">
-      <header className='mb-4 flex justify-between items-center'>
+      <header className="mb-4 flex justify-between items-center">
         <Filters />
         <CreateTask projectId={id} permission={permisson} />
       </header>
-      <section className='h-[50vh] mb-[60px]'>
-        <Table className='w-full' >
-          <TableHeader className='shadow-md '>
+      <section className="h-[50vh] mb-[60px]">
+        <Table className="w-full">
+          <TableHeader className="shadow-md ">
             <TableRow>
               <TableHead className="w-[100px]">Title</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Description</TableHead>
-              <TableHead className='text-right'>actions</TableHead>
+              <TableHead className="text-right">actions</TableHead>
             </TableRow>
           </TableHeader>
-          {isLoading ?
-            (
-              <TableSkeleton />
-            ) : (
-              <TableBody >
-                {tasks?.length! > 0 &&
-                  tickets?.map((task, index) => (
-                    <TaskItem
-                      key={task.id}
-                      task={task}
-                      projectId={id}
-                      index={index}
-                      moveTask={moveTask}
-                      permission={permisson}
-                    />
-                  ))
-                }
-              </TableBody>)}
+          {isLoading ? (
+            <TableSkeleton />
+          ) : (
+            <TableBody>
+              {tasks?.length! > 0 &&
+                tickets?.map((task, index) => (
+                  <TaskItem
+                    key={task.id}
+                    task={task}
+                    projectId={id}
+                    index={index}
+                    moveTask={moveTask}
+                    permission={permisson}
+                  />
+                ))}
+            </TableBody>
+          )}
         </Table>
       </section>
-      <Pagenation currentPage={currentPage} meta={meta} isLoading={isLoading} prevPage={prevPage} nextPage={nextPage} />
+      <Pagenation
+        currentPage={currentPage}
+        meta={meta}
+        isLoading={isLoading}
+        prevPage={prevPage}
+        nextPage={nextPage}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default TaskContainer
-
+export default TaskContainer;
