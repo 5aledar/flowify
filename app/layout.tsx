@@ -5,8 +5,8 @@ import './globals.css';
 import Navbar from '../components/Navbar';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ClerkProvider } from '@clerk/nextjs';
-import { dark } from '@clerk/themes';
 import QueryProvider from '@/components/QueryProvider';
+import { dark, neobrutalism } from '@clerk/themes'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -33,7 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider publishableKey="pk_test_aW5mb3JtZWQtc3BhcnJvdy04NC5jbGVyay5hY2NvdW50cy5kZXYk">
+    <ClerkProvider
+      publishableKey="pk_test_aW5mb3JtZWQtc3BhcnJvdy04NC5jbGVyay5hY2NvdW50cy5kZXYk"
+      appearance={{
+        baseTheme: [dark, neobrutalism],
+      }}
+    >
       <QueryProvider>
         <html lang="en" suppressHydrationWarning>
           <body
